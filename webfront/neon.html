@@ -1,0 +1,206 @@
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Flip</title>
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Raleway|Roboto|Shrikhand|Spirax|Slabo 27px|Indie Flower|Poor Story" rel="stylesheet">
+
+<style>
+
+.Roboto{
+    font-family: 'Roboto', sans-serif;
+}
+.Open_Sans{
+    font-family: 'Open Sans', sans-serif;
+}
+.Raleway{
+    font-family: 'Raleway', sans-serif;
+}
+.Shrikhand{
+    font-family: 'Shrikhand', sans-serif;
+}
+.Spirax{
+    font-family: 'Spirax', sans-serif;
+}
+.Slabo{
+    font-family: 'Slabo 27px', sans-serif;
+}
+.Indie{
+    font-family: 'Indie Flower', sans-serif;
+}
+.Poorstory{
+    font-family: 'Poor Story', sans-serif;
+}
+
+body{
+    text-align: center;
+    background-color: #fcfdd6;
+    background-image: url("images/hexbackground.png");
+    background-repeat: repeat;
+}
+
+
+#intro{
+    text-align: center;
+}
+
+a {
+    font-size: 13px;
+    font-weight: bold;
+}
+ /* unvisited link */
+}
+a:link {
+    color: red;
+}
+
+/* visited link */
+a:visited {
+    color: hotpink;
+}
+
+/* mouse over link */
+a:hover {
+    color: hotpink;
+}
+
+/* selected link */
+a:active {
+    color: blue;
+} 
+
+.introimg{
+  font-family: 'Slabo 27px', sans-serif;
+  font-weight: bold;
+  font-size: 16px;
+  display: grid;
+  grid-template-columns: 240px auto auto;
+  padding-top: 40px;
+}
+
+.item1{
+    grid-column-start: 1;
+    grid-column-end: 3;
+}
+
+#smile{
+    padding-top: 15px;
+}
+
+#disclaimer{
+    text-align: center;
+    color: lightgrey;
+}
+
+.contentPane {
+    
+  border: 2px solid black;
+  position: fixed; // Reposition logo from the natural layout
+  
+  top: 50%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-50%, 0%);
+  
+  top: 100px;
+  max-width: 700px;
+  min-width: 700px;
+  width: 60%;
+  
+  z-index: 2;
+  
+  background-color: #ffffff;
+  
+  text-align: left;
+  padding: 30px;
+  
+  border-radius: 5px;
+  overflow: hidden;
+  
+}
+
+#zebrapattern{
+    margin-left: -40px;
+    margin-top: -80px;
+    margin-bottom: -10px;
+}
+
+#zebrapattern2{
+    margin-left: -40px;
+    margin-top: 20px;
+    margin-bottom: -140px;
+}
+
+#letsgo{
+    position:relative;
+}
+
+</style>
+
+<script>
+    
+    
+</script>
+
+</head>
+
+<body>
+    <div class="contentPane">
+        <div id="zebrapattern"><img src="images/zebrathin.png" width="720px"></div>
+        <div id="intro">
+        <h1>FLIP: Online RNA-seq alignment</h1>
+        
+        FLIP is a super light-weight, simple cloud based alignment pipeline that allows easy and fast FASTQ upload and alignment against human and mouse genomes. The pipeline is compatible with the <a href="https://amp.pharm.mssm.edu/archs4" target="_blank">ARCHS4</a> transcript quantification. Get your transcript quantification without delay. File sizes are currently limited to 5 GB per file.
+        
+        <div class="introimg">
+            <div>Upload FASTQ to the cloud</div>
+            <div>Schedule alignment</div>
+            <div>Get results</div>
+            <div class="item1"><img src="images/intropic.png" width="500px"></div>
+            <div id="smile"><img id="smiley" src="images/smily.png" width="70px"></div>
+        </div>
+        
+        </div>
+        
+        <h1>Let's go</h1>
+        <hr>
+        
+    <form>
+      <div class="form-group">
+        <label for="exampleInputEmail1">Email address</label>
+        <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Password</label>
+        <input type="password" class="form-control" id="passwd" placeholder="Password">
+      </div>
+      <button type="submit" class="btn btn-primary letsgo" id="letsgo">Login</button>
+    </form>
+    
+    <hr>
+    <div id="disclaimer">Don't let the look put you off. This pipeline is using the top of the line alignment <a href="https://pachterlab.github.io/kallisto/about" target="_blank">algorithm</a> and robust cloud computing technologies with fool proof interface that will make this step of your data analysis as painless as possible. Give us <a href="#">Feedback</a> so we can improve.</div>
+    
+    <div id="zebrapattern2"><img src="images/zebrathin.png" width="720px"></div>
+    </div>
+    <div id="tile_container" class="grid-container"></div>
+    
+    <!--
+    <div class="flip-container" ontouchstart="this.classList.toggle('hover');">
+        <div class="flipper">
+            <div class="front backtile">
+                A
+            </div>
+            <div class="back backtile">
+                B
+            </div>
+        </div>
+    </div>
+    -->
+    
+    
+</body>
+</html>

@@ -1,0 +1,66 @@
+
+<div id="logininfo"><h2>Logged in as lachmann12</h2>File uploads will be managed through user control to S3.<hr/></div>
+
+<form id="dataform" action="x" method="POST" enctype="multipart/form-data" style="display: block;">
+    <input id="uid" name="key" value="x" type="hidden">
+    <input id="cid" name="AWSAccessKeyId" value="x" type="hidden">
+    <input name="acl" value="private" type="hidden">
+    <input name="success_action_redirect" value="success.html" type="hidden">
+    <input id="policy" name="policy" value="x" type="hidden">
+    <input id="signature" name="signature" value="x" type="hidden">
+    <input name="Content-Type" value="application/octet-stream" type="hidden">
+    
+    <h2>File to upload to S3</h2>
+    <input name="file" type="file">
+    <br><br>
+    <button type="button" id="loginbutton" class="btn btn-lg btn-block btn-outline-primary" onclick="upload();">Upload File</button>
+</form>
+
+<div id="prbar" class="progress" style="height: 30px; display: none;">
+    <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+</div>
+
+<hr>
+
+<div id="status"></div>
+<div id="userfiles"><label class="container"><span id="fn1">3-293T-5uM_S3_L001_R1_001.fastq.gz</span><span style="float:right;"><font color="grey">1.4GB</font></span><input id="c1" class="seqcheck" onclick="checkBox(1)" type="checkbox"><span id="cm1" class="checkmark"></span></label><label class="container"><span id="fn2">3-293T-5uM_S3_L002_R1_001.fastq.gz</span><span style="float:right;"><font color="grey">1.3GB</font></span><input id="c2" class="seqcheck" onclick="checkBox(2)" type="checkbox"><span id="cm2" class="checkmark">1</span></label><label class="container"><span id="fn3">4-293T-UIFN_S4_L001_R1_001.fastq.gz</span><span style="float:right;"><font color="grey">1.1GB</font></span><input id="c3" class="seqcheck" onclick="checkBox(3)" type="checkbox"><span id="cm3" class="checkmark"></span></label><label class="container"><span id="fn4">4-293T-UIFN_S4_L002_R1_001.fastq.gz</span><span style="float:right;"><font color="grey">1.0GB</font></span><input id="c4" class="seqcheck" onclick="checkBox(4)" type="checkbox"><span id="cm4" class="checkmark"></span></label><label class="container"><span id="fn5">5-MEF-Mock_S5_L001_R1_001.fastq.gz</span><span style="float:right;"><font color="grey">1.4GB</font></span><input id="c5" class="seqcheck" onclick="checkBox(5)" type="checkbox"><span id="cm5" class="checkmark">2</span></label><label class="container"><span id="fn6">5-MEF-Mock_S5_L002_R1_001.fastq.gz</span><span style="float:right;"><font color="grey">1.3GB</font></span><input id="c6" class="seqcheck" onclick="checkBox(6)" type="checkbox"><span id="cm6" class="checkmark"></span></label></div>
+
+<div id="submitjob" style="display: block;">
+  <hr>
+  <form>
+    
+    <div class="form-group row">
+      <label for="colFormLabel" class="col-sm-3 col-form-label">Output</label>
+      <div class="col-sm-9">
+        <input class="form-control" id="outname" placeholder="Output file name" type="text">
+      </div>
+    </div>
+    
+    <div class="form-group row">
+      <label for="file1" class="col-sm-1 col-form-label"><img src="images/file1.png"></label>
+      <div class="col-sm-11">
+        <input readonly="" class="form-control-plaintext" id="file1" value="" type="text">
+      </div>
+    </div>
+    
+    <div class="form-group row" id="file2field" style="display: flex;">
+      <label for="file2" class="col-sm-1 col-form-label"><img src="images/file2.png"></label>
+      <div class="col-sm-11">
+        <input readonly="" class="form-control-plaintext" id="file2" value="" type="text">
+      </div>
+    </div>
+    
+    <div class="form-group row">
+      <label for="colFormLabelLg" class="col-sm-3 col-form-label">Species</label>
+      <div class="col-sm-9">
+        <select class="custom-select my-1 mr-sm-2" id="organismselector">
+          <option value="1">Human</option>
+          <option value="2">Mouse</option>
+        </select>
+      </div>
+    </div>
+    <button type="button" id="jobcreate" class="btn btn-lg btn-block btn-outline-warning" onclick="createjob();">Submit Job</button>
+  </form>
+  
+</div>
+</div>

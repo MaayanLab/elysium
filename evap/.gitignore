@@ -1,0 +1,11 @@
+.DS_Store
+
+.idea/
+*.sw*
+*~
+
+*.log
+node_modules/
+
+coverage
+.nyc_output
