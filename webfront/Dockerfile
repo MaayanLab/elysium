@@ -16,6 +16,7 @@ RUN pip install tornado
 RUN pip install MySQL-python
 RUN pip install requests
 RUN pip install boto
+RUN pip install python-dateutil --upgrade
 RUN pip install awscli --upgrade --user
 
 WORKDIR /usr/local/src

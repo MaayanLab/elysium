@@ -1,0 +1,1368 @@
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>ELYSIUM</title>
+    
+    <link rel="icon" href="images/smily.png?v=3" type="image/png">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+    
+    
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Raleway|Roboto|Shrikhand|Spirax|Slabo 27px|Indie Flower|Poor Story|Press Start 2P" rel="stylesheet">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretty-checkbox@3.0/dist/pretty-checkbox.min2.css">
+    <script src="js/jqueryform.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    
+    <link rel="stylesheet" href="css/css.css">
+<style>
+
+.Roboto{
+    font-family: 'Roboto', sans-serif;
+}
+.Open_Sans{
+    font-family: 'Open Sans', sans-serif;
+}
+.Raleway{
+    font-family: 'Raleway', sans-serif;
+}
+.Shrikhand{
+    font-family: 'Shrikhand', sans-serif;
+}
+.Spirax{
+    font-family: 'Spirax', sans-serif;
+}
+.Slabo{
+    font-family: 'Slabo 27px', sans-serif;
+}
+.Indie{
+    font-family: 'Indie Flower', sans-serif;
+}
+.Poorstory{
+    font-family: 'Poor Story', sans-serif;
+}
+
+h1{
+    font-size: 56px;
+    -webkit-text-stroke: 1px #ff1fc2;
+   color: white;
+   text-shadow:
+       3px 3px 0 #bf3199,
+     -1px -1px 0 #bf3199,  
+      1px -1px 0 #bf3199,
+      -1px 1px 0 #bf3199,
+       1px 1px 0 #bf3199;
+}
+
+body{
+    text-align: center;
+    background-color: #fcfdd6;
+    background-image: url("images/hexbackground.png");
+    background-repeat: repeat;
+    
+}
+
+.grid-container {
+  position: fixed;
+  display: grid;
+  grid-template-columns: auto auto auto auto auto auto auto auto auto auto auto;
+  grid-gap: 0px;
+  background-color: #ef1e55;
+  padding: 10px;
+  width: 100%;
+  margin:0 auto;
+  color: #c30e3d;
+  border-radius: 0px;
+  overflow: hidden;
+  height: 100%;
+  
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+  opacity: 0.9;
+}
+
+/* entire container, keeps perspective */
+.flip-container {
+    perspective: 1000px;
+}
+/* ELYSIUM the pane when hovered */
+.flip-container:hover .flipper, .flip-container.hover .flipper {
+    transform: rotateY(180deg);
+}
+
+.flipped {
+    transform: rotateY(180deg);
+}
+
+.flip-container, .front, .back {
+    width: 100px;
+    height: 100px;
+}
+
+/* ELYSIUM speed goes here */
+.flipper {
+    transition: 0.3s;
+    transform-style: preserve-3d;
+    position: relative;
+}
+
+/* hide back of pane during swap */
+.front, .back {
+    backface-visibility: hidden;
+    transition: 0.3s;
+    transform-style: preserve-3d;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+/*  UPDATED! front pane, placed above back */
+.front {
+    z-index: 2;
+    transform: rotateY(0deg);
+    background: #ef1e55;
+}
+
+/* back, initially hidden pane */
+.back {
+    transform: rotateY(-180deg);
+    background: lightgreen;
+}
+
+/* 
+    Some vertical ELYSIUM updates 
+*/
+.vertical.flip-container {
+    position: relative;
+}
+
+.vertical .back {
+    transform: rotateX(180deg);
+}
+
+.vertical.flip-container:hover .back {
+    transform: rotateX(0deg);
+}
+
+.vertical.flip-container:hover .front {
+    transform: rotateX(180deg);
+}
+
+.vertical.flip-container.ELYSIUMped .back {
+    transform: rotateX(0deg);
+}
+
+.vertical.flip-container.ELYSIUMped .front {
+    transform: rotateX(180deg);
+}
+
+.backtile{
+    font-size: 80;
+    height: 100px;
+    width: 100px;
+    
+    text-align: center;
+    vertical-align: middle;
+    line-height: 100px; 
+}
+
+#intro{
+    text-align: center;
+    padding-top: 34px;
+}
+
+a {
+    font-size: 13px;
+    font-weight: bold;
+}
+ /* unvisited link */
+}
+a:link {
+    color: red;
+}
+
+/* visited link */
+a:visited {
+    color: hotpink;
+}
+
+/* mouse over link */
+a:hover {
+    color: hotpink;
+}
+
+/* selected link */
+a:active {
+    color: blue;
+}
+
+.introimg{
+  font-family: 'Slabo 27px', sans-serif;
+  font-weight: bold;
+  font-size: 16px;
+  display: grid;
+  grid-template-columns: 220px auto auto;
+  padding-top: 40px;
+}
+
+.item1{
+    grid-column-start: 1;
+    grid-column-end: 3;
+}
+
+#smile{
+    padding-top: 15px;
+}
+
+#disclaimer{
+    text-align: center;
+    color: lightgrey;
+}
+
+.contentPane {
+  
+  border: 1px solid black;
+  position: absolute; // Reposition logo from the natural layout
+  
+  top: 50%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-50%, 0%);
+  
+  top: 20px;
+  max-width: 700px;
+  
+  width: 60%;
+  
+  z-index: 2;
+  
+  background-color: #ffffff;
+  
+  text-align: left;
+  padding: 30px;
+  
+  border-radius: 5px;
+  overflow: hidden;
+  
+ -webkit-box-shadow: 1px 1px 3px 3px rgba(0, 0, 0, 0.4);  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+  -moz-box-shadow:    1px 1px 3px 3px rgba(0, 0, 0, 0.4);  /* Firefox 3.5 - 3.6 */
+  box-shadow:         1px 1px 3px 3px rgba(0, 0, 0, 0.4);  /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+
+
+}
+
+#zebrapattern{
+    margin-left: -40px;
+    margin-top: -140px;
+    margin-bottom: -10px;
+}
+
+#zebrapattern2{
+    margin-left: -40px;
+    margin-top: 20px;
+    margin-bottom: -160px;
+}
+
+#letsgo{
+    position:relative;
+}
+
+.headfont{
+    margin-bottom: 16px;
+    margin-top: 16px;
+    position: absolute;
+    top: -10;
+    left: 20px;
+    font-size: 54px;
+}
+
+#memuser{
+    display: none;
+    font-size: 16px;
+    padding-bottom: 20px;
+}
+
+#errorflag{
+    margin-bottom: 20px;
+}
+
+#leftcontent{
+    padding: 0px;
+}
+
+#leftpane{
+    width: 700px;
+}
+
+#love{
+    position: absolute;
+    top: 3;
+    left: 188px;
+}
+
+.buttonlove{
+    position: relative;
+    opacity: 0.7;
+}
+
+#jobcreate {
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    border: 2px solid #eeeeee;
+    height: 50px;
+    text-align: center;
+    overflow: hidden;
+    vertical-align: middle;
+    background-color:  #eeeeee;
+    
+}
+
+#jobcreate:hover {
+    /* background-color: #4CAF50; Green */
+    border: 2px solid magenta;
+    text-align: center;
+    vertical-align: middle;
+    padding-left: 165px;
+    padding-top: -20px;
+}
+
+#jobcreate:active {
+    /* background-color: #4CAF50; Green */
+    background-color: magenta;
+    color: white;
+}
+
+.letsgo{
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    border: 2px solid #eeeeee;
+    height: 50px;
+    text-align: center;
+    overflow: hidden;
+    vertical-align: middle;
+    background-color:  #eeeeee;
+    color: grey;
+    width: 640px;
+    font-size: 20px;
+}
+
+.letsgo:hover {
+    /* background-color: #4CAF50; Green */
+    border: 2px solid lightgrey;
+    background-color:  #eeeeee;
+    color: black;
+}
+
+.letsgo:active {
+    /* background-color: #4CAF50; Green */
+    background-color: #1f82f1;
+    color: white;
+}
+
+#uploadbutton {
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    border: 2px solid #eeeeee;
+    height: 50px;
+    text-align: center;
+    overflow: hidden;
+    vertical-align: middle;
+    color: black;
+    
+}
+
+#uploadbutton:hover {
+    /* background-color: #4CAF50; Green */
+    border: 2px solid lightgrey;
+}
+
+#uploadbutton:active {
+    /* background-color: #4CAF50; Green */
+    background-color: lightgreen;
+    color: white;
+}
+
+#uploadform{
+    padding-top: 26px;
+    padding-bottom: 10px;
+    font-size: 20px;
+}
+
+#prbar{
+    margin-top:30px;
+}
+
+#userfiles {
+    text-overflow: ellipsis;
+    margin-left: -14px;
+    padding: 0px;
+}
+
+#submitjob{
+    display: none;
+    
+}
+
+#file1{
+    width: 420px;
+    border-style: none;
+    padding-left: 10px;
+}
+
+#file2{
+    width: 420px;
+    border-style: none;
+    padding-left: 10px;
+}
+
+#jobstatus{
+    padding: 18px;
+    display: none;
+    z-index: 3;
+    position: absolute; // Reposition logo from the natural layout
+    left: 600px;
+    top: 20px;
+    background-color: #fff;
+    
+    border-radius: 5px;
+    overflow: hidden;
+    
+    border: 2px solid black;
+    margin-bottom: 20px;
+    
+    -webkit-box-shadow: 1px 1px 3px 3px rgba(0, 0, 0, 0.4);  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+    -moz-box-shadow:    1px 1px 3px 3px rgba(0, 0, 0, 0.4);  /* Firefox 3.5 - 3.6 */
+    box-shadow:         1px 1px 3px 3px rgba(0, 0, 0, 0.4);  /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+}
+
+#fileinfo{
+    color: grey;
+    margin-bottom: 20px;
+}
+
+#question{
+    
+    font-size: 60px;
+    position: absolute;
+    background-color: #eeeeee;
+    width: 100px;
+    height: 80px;
+    z-index: 1;
+    top: 120px;
+    left: 5px;
+    border: 4px solid black;
+    border-radius: 20px;
+    font-family: 'Spirax', sans-serif;
+    font-weight: bold;
+    text-align: left;
+    padding-left: 8px;
+    
+    display: none;
+    
+    cursor: pointer;
+    
+    -webkit-box-shadow: 1px 1px 3px 3px rgba(0, 0, 0, 0.4);  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+    -moz-box-shadow:    1px 1px 3px 3px rgba(0, 0, 0, 0.4);  /* Firefox 3.5 - 3.6 */
+    box-shadow:         1px 1px 3px 3px rgba(0, 0, 0, 0.4);  /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+    
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+    /*Raleway|Roboto|Shrikhand|Spirax|Slabo 27px|Indie Flower|Poor Story|Press Start 2P*/
+}
+
+#question:hover{
+    background-color: #ffffff;
+}
+
+#closehelp{
+    
+    font-size: 60px;
+    position: relative;
+    
+    left: 700;
+    
+    width: 1px;
+    height: 1px;
+    z-index: 1;
+    top: -40px;
+    
+    font-family: 'Spirax', sans-serif;
+    font-weight: bold;
+    text-align: left;
+    padding-left: 8px;
+    
+    cursor: pointer;
+}
+
+#closehelp:hover{
+    color: red;
+}
+
+#help{
+    
+    display: none;
+    
+    padding: 30px;
+    top: 20px;
+    left: 50%;
+    /* bring your own prefixes */
+    transform: translate(-50%, 0%);
+    
+    border-radius: 20px;
+    z-index:5;
+    
+    position: absolute;
+    background-color: white;
+    
+    border: 4px solid black;
+    
+    width: 800px;
+    
+    -webkit-box-shadow: 1px 1px 3px 3px rgba(0, 0, 0, 0.4);  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+    -moz-box-shadow:    1px 1px 3px 3px rgba(0, 0, 0, 0.4);  /* Firefox 3.5 - 3.6 */
+    box-shadow:         1px 1px 3px 3px rgba(0, 0, 0, 0.4);  /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+    
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently */
+}
+
+#helptitle{
+    font-size: 30px;
+    float: left;
+    width: 600px;
+    text-align: left;
+    margin-bottom: 30px;
+}
+
+#helpcontent{
+    text-align: left;
+    top: -40;
+}
+
+#pipetty{
+    float: right;
+}
+
+#bubble{
+    z-index: 2;
+}
+
+#bubbletext{
+    position: relative;
+    top: -155;
+    width: 500px;
+    padding-left: 30px;
+    height: 60px;
+}
+
+#statusinfo{
+    padding-top: 20px;
+    padding-left: 30px;
+    display: grid;
+    grid-gap: 20px;
+    grid-template-columns: 60px auto;
+}
+
+#gifview{
+    padding-top: 10px;
+    padding-left: 0px;
+    display: grid;
+    grid-gap: 20px;
+    grid-template-columns: auto auto;
+}
+
+
+#jobinfoitem{
+    padding-top: 8px;
+}
+
+.gifview{
+    border: 1px solid black;
+}
+
+#helpfooter{
+    padding-top: 10px;
+    padding-left: 0px;
+    display: grid;
+    grid-gap: 20px;
+    grid-template-columns: auto auto auto;
+}
+
+#usercredentials{
+    top: 0px;
+    height: 14px;
+}
+
+</style>
+
+<script>
+    
+    var colors = ["#ffffff", "#ef1e57", "#ffeb95", "#d3a1bc", "#15564e"];
+    var username = getCookie("username");
+    var password = getCookie("password");
+    var loggedin = false;
+    
+    
+    $( document ).ready(function() {
+        
+        var possible = "ATCG"
+        
+        for(var i=0; i<15; i++){
+            for(var j=0; j<15; j++){
+                
+                var fonts = ['Roboto', 'Open_Sans', 'Raleway', 'Shrikhand', 'Spirax', 'Slabo', 'Indie', 'Poorstory'];
+                var rand = fonts[Math.floor(Math.random() * fonts.length)];
+                
+                var p1 = possible.charAt(Math.floor(Math.random() * possible.length));
+                var p2 = possible.charAt(Math.floor(Math.random() * possible.length));
+                while(p1 == p2){
+                    p2 = possible.charAt(Math.floor(Math.random() * possible.length));
+                }
+                
+                if(Math.random() > 0.8){
+                    p2 = ";)"
+                }
+                
+                var front = fonts[Math.floor(Math.random() * fonts.length)]
+                var back = fonts[Math.floor(Math.random() * fonts.length)]
+                
+                tileString = "<div class=\"ELYSIUM-container\" ontouchstart=\"this.classList.toggle('hover');\"><div class=\"ELYSIUMper\"><div class=\"front backtile "+front+"\" style=\"font-size: "+(20+Math.floor(Math.random() * 100))+"px;\">"
+                tileString = tileString+p1+"</div><div class=\"back backtile "+back+"\" style=\"font-size: "+(20+Math.floor(Math.random() * 100))+"px;\">";
+                tileString = tileString+p2+"</div></div></div>";
+                
+                $("#tile_container").append(tileString);
+            }
+        }
+        
+        $('#smiley').css({transform: 'rotate(180deg)'});
+        
+        var $elie = $("#smiley");
+        setTimeout(function() { rotate(180); }, 1000);
+        
+        function rotate(degree) {
+            $elie.css({
+            'transform': 'rotate(' + degree + 'deg)'
+            });
+            
+            if (degree < 360) {
+                timer = setTimeout(function() {
+                    rotate(++degree)
+                }, 2);
+            }
+        }
+        
+        $('.letsgo').click(function(e) {
+            e.preventDefault();
+            
+            username = $("#email").val();
+            password = $("#passwd").val();
+            if(username == "" || password == ""){
+                username = getCookie("username")
+                password = getCookie("password")
+            }
+            
+            if(username != "" && password != ""){
+                setCookie("username", username, 5)
+                setCookie("password", password, 5)
+                
+                $.getJSON( "https://amp.pharm.mssm.edu/charon/login?username="+username+"&password="+password, function( data ) {
+                    
+                    if(data["status"] == "success"){
+                        letsgo();
+                    }
+                    else{
+                        $.getJSON( "https://amp.pharm.mssm.edu/charon/createuser?username="+username+"&password="+password+"&invitationKey=charon2018", function( data ) {
+                            if(data["status"] == "error"){
+                                $("#errorflag").html("Account already exists, but password does not match.");
+                                $("#passwd").val("");
+                            }
+                        });
+                    }
+                });
+            }
+        });
+        
+        if(username != "" && password != ""){
+            $("#email").val(username);
+            $("#passwd").val(password);
+            
+            $(".emailfield").hide();
+            $(".passfield").hide();
+            
+            $("#memuser").html("Logged in as <b>"+username+"</b><br><a href=\"javascript:logout();\">Logout</a>");
+            $("#memuser").show();
+        }
+        
+        $('#question').on( "click", function() {
+            $("#help").fadeIn();
+            $(".contentPane").toggle();
+            $("#jobstatus").toggle();
+            $("#question").toggle();
+        });
+        
+        $('#closehelp').on( "click", function() {
+            $("#help").toggle();
+            $(".contentPane").fadeIn();
+            if(loggedin){
+                $("#jobstatus").fadeIn();
+                $("#question").delay(300).fadeIn();
+            }
+        });
+        
+    });
+    
+    (function loop() {
+        var rand = Math.round(Math.random() * (16000 - 500)) + 500;
+        setTimeout(function() {
+                blink();
+                loop();  
+        }, rand);
+    }());
+    
+    function flipping(){
+        
+        if(Math.random() < 0.5){
+            $("flip-container").each(function( index ) {
+                $(this).addClass("flipped");
+            });
+        }
+        else{
+            $(this).removeClass("flipped");
+        }
+    }
+    
+    function setCookie(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays*24*60*60*1000));
+        var expires = "expires="+ d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + "";
+    }
+    
+    function getCookie(cname) {
+        var name = cname + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        
+        var ca = decodedCookie.split(';');
+        for(var i = 0; i <ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+    
+    function logout(){
+        document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        document.cookie = "password=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        document.cookie = 'username=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        document.cookie = 'password=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        username = "";
+        password = "";
+        location.reload();
+    }
+    
+    function delete_cookie(cname){
+      document.cookie = cname + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    }
+    
+    
+    function upload(){
+      $("prbar").show();
+      $.getJSON( "https://amp.pharm.mssm.edu/charon/signpolicy?username="+username+"&password="+password, function( data ) {
+          
+          var items = [];
+          
+          $.each( data, function( key, val ) {
+            
+            if(key == "uid"){
+                $('#uid').val(val+"/${filename}");
+            }
+            else if(key == "cid"){
+                $('#cid').val(val);
+            }
+            else if(key == "bucket"){
+                $('#dataform').attr("action", "https://"+val+".s3.amazonaws.com/");
+            }
+            else if(key == "policy"){
+                $('#policy').val(val);
+            }
+            else if(key == "signature"){
+                $('#signature').val(val);
+            }
+          });
+          
+          var bar = $('.bar');
+          var percent = $('.progress-bar');
+          var status = $('#status');
+          
+          $('#dataform').ajaxForm({
+              beforeSend: function() {
+                  status.empty();
+                  var percentVal = '0%';
+                  bar.width(percentVal);
+                  percent.html(percentVal);
+                  $("#dataform").toggle();
+                  $("#prbar").toggle();
+              },
+              uploadProgress: function(event, position, total, percentComplete) {
+                  var percentVal = percentComplete + '%';
+                  bar.width(percentVal);
+                  percent.html(percentVal);
+                  percent.attr("aria-valuenow", percentComplete);
+                  percent.css("width", percentVal);
+              },
+              complete: function(xhr) {
+                  status.html(xhr.responseText);
+                  $("#dataform").toggle();
+                  $("#prbar").toggle();
+                  checkFiles(username, password);
+              }
+          });
+          $('#dataform').submit();
+       });
+    }
+    
+    function createjob(){
+      
+      organismbuff = $('#organismselector').find(":selected").text();
+      outname = $("#outname").val()
+      if(outname == ""){
+          outname = Math.random().toString(36).substring(7);
+      }
+      
+      if($('input:checked').length == 1) {
+        url = "https://amp.pharm.mssm.edu/cloudalignment/createjob?username="+username+"&password="+password+"&outname="+outname+"&file1="+$("#file1").val()+"&organism="+organismbuff.toLowerCase();
+      }
+      else if($('input:checked').length == 2) {
+        url = "https://amp.pharm.mssm.edu/cloudalignment/createjob?username="+username+"&password="+password+"&outname="+outname+"&file1="+$("#file1").val()+"&file2="+$("#file2").val()+"&organism="+organismbuff.toLowerCase();
+      }
+      
+      $.getJSON( url, function( data ) {
+        $("#uname").val(username);
+        $("#pass").val(password);
+        
+        listStatus(username, password);
+      });
+    }
+    
+    function checkFiles(username, passwd){
+        $.getJSON( "https://amp.pharm.mssm.edu/charon/files?username="+username+"&password="+passwd, function( data ) {
+            var fileStr = "";
+            var fileStr2 = "";
+            filename = data["filenames"];
+            filesize = data["filesize"];
+            
+            counter = 0
+            for(i=(filename.length-1); i>=0; i--){
+              if(filename[i].includes(".fastq") || filename[i].includes(".fq")){
+                counter = counter + 1;
+                fstr = "<span id=\"fn"+counter+"\">"+filename[i]+"</span><span style=\"float:right;\"><font color=\"grey\">"+filesize[i]+"</font></span>";
+                fstr = "<label class=\"container\">"+fstr+"<input id=\"c"+counter+"\" class=\"seqcheck\" type=\"checkbox\"><span id=\"cm"+counter+"\" class=\"checkmark\"></span></label>"
+                fileStr += fstr;
+              }
+              else{
+                //onclick=\"checkBox("+counter+")\"
+                //fstr = filename[i]+" <span style=\"float:right;\"><font color=\"grey\">"+filesize[i]+"</font></span><br>";
+                //fstr = "<label class=\"container\">"+fstr+"</label>"
+                //fileStr2 += filename[i]+" <span style=\"float:right;\"><font color=\"grey\">"+filesize[i]+"</font></span><br>";
+              }
+            }
+            
+            $("#userfiles").html(fileStr+""+fileStr2);
+            $('.seqcheck').click(function(event) {
+                //event.preventDefault();
+                checkBox($(this).attr('id').replace("c", ""), event);
+            });
+        });
+    }
+    
+    function checkBox(num, event){
+      var maxed = 0;
+      
+      $("#file1").val("");
+      $("#file2").val("");
+      
+      if($('input:checked').length == 0) {
+        $("#submitjob").hide();
+      }
+      else{
+        $("#submitjob").fadeIn();
+      }
+      
+      if($('input:checked').length > 1) {
+        $("#file2field").fadeIn();
+      }
+      else{
+        $("#file2field").hide();
+      }
+      
+      if($('input:checked').length > 2) {
+            event.preventDefault();
+           $('#c'+num).attr('checked', false);
+      }
+      else{
+        $('#cm'+num).html("");
+      }
+      
+      i = 0;
+      if($('input:checked').length <= 2) {
+          $('input:checked').each(function(index, value) {
+             i = i+1;
+             
+             $("#file"+i).val($('#fn'+value.id.replace("c", "")).html());
+             $('#cm'+value.id.replace("c", "")).html(""+i);
+          });
+      }
+      
+    }
+    
+    function listStatus(username, passwd){
+        $.getJSON( "https://amp.pharm.mssm.edu/cloudalignment/progress?username="+username+"&password="+passwd, function( data ) {
+            
+            var tabletext = "<table id='tablestate' class='table table-striped table-bordered'><thead><tr><th>Status</th><th>Name</th><th>Data</th><th>Results</th><th>Organism</th><th>Creation Date</th></tr><tbody>";
+            
+            var temp = Object.keys(data).reverse()
+            
+            temp.forEach(function (key) {
+              //if (data.hasOwnProperty(key)) {
+                  datalink = data[key]["datalink"];
+                  creationdate = data[key]["creationdate"].replace(/-/g, "/");
+                  
+                  var d2 = new Date(creationdate+" GMT")
+                  creationdate = d2.toLocaleString()
+                  
+                  outname = data[key]["outname"];
+                  organism = data[key]["organism"];
+                  status = data[key]["status"];
+                  user = data[key]["user"];
+                  
+                  dl = datalink.split(";");
+                  dl[0] = dl[0].replace("https://s3.amazonaws.com/biodos/"+user+"/", "")
+                  if(dl.length > 1){
+                    dl[1] = dl[1].replace("https://s3.amazonaws.com/biodos/"+user+"/", "")
+                    fileinfo = "<img src=\"images/file1.png\"> "+dl[0]+"<br><img src=\"images/file2.png\"> "+dl[1];
+                  }
+                  else{
+                    fileinfo = "<img src=\"images/file1.png\"> "+dl[0]
+                  }
+                  
+                  if(status == "waiting"){
+                    statusline = "<img src=\"images/pending.png\" width=\"40\" alt=\"pending\">";
+                  }
+                  else if(status == "submitted"){
+                    statusline = "<img src=\"images/submitted.png\" width=\"40\" alt=\"processing\">";
+                  }
+                  else if(status == "completed"){
+                    statusline = "<img src=\"images/completed.png\" width=\"40\" alt=\"completed\">";
+                  }
+                  else if(status == "failed"){
+                    statusline = "<img src=\"images/error.png\" width=\"40\" alt=\"failed\">";
+                  }
+                  if(status == "completed"){
+                    outfiles = "<a href=\"https://s3.amazonaws.com/biodos/"+user+"/"+outname+"_transcript.tsv\">Transcript Counts</a>";
+                    outfiles += "<br><a href=\"https://s3.amazonaws.com/biodos/"+user+"/"+outname+"_gene.tsv\">Gene Counts</a>";
+                    outfiles += "<br><a href=\"https://s3.amazonaws.com/biodos/"+user+"/"+outname+"_qc.tsv\">Alignment Info</a>";
+                    tabletext += "<tr><td>"+statusline+"</td><td>"+outname+"</td><td>"+fileinfo+"</td><td>"+outfiles+"</td><td>"+organism+"</td><td>"+creationdate+"</td></tr>";
+                  }
+                  else{
+                    tabletext += "<tr><td>"+statusline+"</td><td>"+outname+"</td><td>"+fileinfo+"</td><td></td><td>"+organism+"</td><td>"+creationdate+"</td></tr>";
+                  }
+               //}
+            });
+            
+            tabletext += "</tbody></table>";
+            
+            $("#jobstatus").html(tabletext);
+        });
+    }
+    
+    function letsgo(){
+        loggedin = true;
+        $('#letsgo').animate({'opacity': 0, 'left' : '700px'}, "slow");
+        var smile = $("#smiley");
+        var psmile = smile.position();
+        
+        var height = $('#leftcontent').height();
+        $('#leftcontent').html("");
+        
+        var form1 = "<form id=\"dataform\" action=\"x\" method=\"POST\" enctype=\"multipart/form-data\" style=\"display: block;\">"+
+            "<input id=\"uid\" name=\"key\" value=\"x\" type=\"hidden\">"+
+            "<input id=\"cid\" name=\"AWSAccessKeyId\" value=\"x\" type=\"hidden\">"+
+            "<input name=\"acl\" value=\"private\" type=\"hidden\">"+
+            "<input name=\"success_action_redirect\" value=\"success.html\" type=\"hidden\">"+
+            "<input id=\"policy\" name=\"policy\" value=\"x\" type=\"hidden\">"+
+            "<input id=\"signature\" name=\"signature\" value=\"x\" type=\"hidden\">"+
+            "<input name=\"Content-Type\" value=\"application/octet-stream\" type=\"hidden\">"+
+            
+            "<div id=\"uploadform\">Upload FASTQ.gz files for alignment with ELYSIUM</div><div id=\"fileinfo\">The FASTQ files have to be compressed with gzip and should be smaller than 5GB. Once uploaded a single file or two files for paired alignment can be selected. A menu will appear in which job name and species can be specified.</div>"+
+            "<input name=\"file\" type=\"file\">"+
+            "<br>"+
+            "<button type=\"button\" id=\"uploadbutton\" class=\"btn btn-lg btn-block btn-outline-primary\" onclick=\"upload();\">Upload File</button>"+
+        "</form>";
+        
+        var progressbar = "<div id=\"prbar\" class=\"progress\" style=\"height: 30px; display: none;\">"+
+            "<div class=\"progress-bar\" role=\"progressbar\" style=\"width: 0%;\" aria-valuenow=\"0\" aria-valuemin=\"0\" aria-valuemax=\"100\">0%</div>"+
+            "</div>";
+            
+        var responsetext = "<hr>" +
+            "<div id=\"status\"></div>" +
+            "<div id=\"userfiles\"></div>";
+        
+        var submitjobtext = "<hr>"+
+            "<div id=\"submitjob\">"+
+              "<form>"+
+                "<label for=\"outname\">Create alignment job</label>"+
+                "<input class=\"form-control\" id=\"outname\" placeholder=\"Output file name\" type=\"text\"><br>"+
+                
+                "<label for=\"file1\"><img src=\"images/file1.png\"></label>"+
+                "<input readonly=\"\" class=\"form-control-plaintext\" id=\"file1\" value=\"\" type=\"text\">"+
+                
+                "<label for=\"file2\" ><img src=\"images/file2.png\"></label>"+
+                "<input readonly=\"\" class=\"form-control-plaintext\" id=\"file2\" value=\"\" type=\"text\">"+
+                
+                "<label for=\"organismselector\">Species</label> "+
+                "<select class=\"custom-select my-1 mr-sm-2\" id=\"organismselector\">"+
+                  "<option value=\"1\">Human</option>"+
+                  "<option value=\"2\">Mouse</option>"+
+                "</select><br><br>"+
+                
+                "<button type=\"button\" id=\"jobcreate\" class=\"btn btn-lg btn-block btn-outline-warning\" onclick=\"createjob();\">Submit Job</button>"+
+              "</form>"+
+            "</div>";
+        
+        var logininfo = "<div id=\"usercredentials\"><b>"+username+"</b> <a style=\"float: right;\" href=\"javascript:logout();\">Logout</a></div>"
+        
+        $('#leftcontent').html(form1+progressbar+responsetext+submitjobtext+logininfo);
+        $('.contentPane').animate({left: "300px"});
+        
+        smile.appendTo("#leftpane")
+        smile.css({top: "200px", left: "424px"})
+        
+        $('#smiley').css({position: 'fixed'});
+        smile.css({top: psmile.x, left: psmile.y})
+        $('#smiley').animate({height: "1600px", width: "1600px", top: "-600px", left: "-600px"}, 600, 'linear');
+        $("#namebanner").html("ELYSIUM");
+        //$('#leftcontent').css({height: height+'px'});
+        
+        $('#smiley').animate({height: "56px", width: "56px", top: "12px", left: "424px"}, 400, 'linear')
+        $('#leftpane').animate({width: 500})
+        
+        checkFiles(username, password);
+        listStatus(username, password);
+        
+        $("#jobcreate").mouseover(function() {
+            submitOver();
+        });
+        $("#jobcreate").mouseout(function() {
+            submitOut();
+        });
+        
+        $('#question').delay(1000).fadeIn();
+        
+        $("#jobstatus").delay(600).fadeIn(400);
+        
+        setInterval(function() {
+          listStatus(username, password);
+        }, 30000);
+    }
+    
+    function submitOver(){
+        for(var i=0; i<16; i++){
+            
+            var loveme = $("<img class=\"buttonlove\" src=\"images/heart.png\" width="+Math.round((10+Math.random()*50))+">")
+            var xpos = Math.random()*120 - 260
+            var ypos = Math.random()*40+ 5
+            
+            loveme.css({top: ypos, left: xpos})
+            loveme.appendTo($("#jobcreate"))
+            
+            var newypos = Math.random()*40-40-Math.random()*70
+            
+            loveme.animate({top: newypos+"px", opacity: 0}, 1000);
+        }
+    }
+    
+    function submitOut(){
+        $("#jobcreate").html("Submit Job")
+    }
+    
+    function blink(){
+        $('#pipetty').attr('src', "images/pipettyblink.png").delay(250).queue( function() {
+            $("#pipetty").attr('src', "images/pipetty.png")
+            $( this ).dequeue();
+        });
+    }
+    
+    function showStartHelp(){
+        $("#help").fadeIn();
+        $(".contentPane").toggle();
+    }
+    
+</script>
+
+</head>
+
+<body>
+    <div class="contentPane" id="leftpane">
+        <div id="zebrapattern">
+            <img src="images/zebrathin.png" width="713px"><h1 class="headfont" id="namebanner">ELYSIUM cloud alignment</h1>
+            <img id="love" src="images/heart.png" width="14px">
+        </div>
+        <div id="leftcontent">
+            
+        <div id="intro">
+        
+        ELYSIUM is a light-weight sequence alignment server. With ELYSIUM you can efficiently and freely align your FASTQ files against the human or mouse genome. The pipeline is compatible with the ARCHS4 transcript quantification pipeline implementing the Kallitso aligner.  Please note that supported file uploads can be in FASTQ or FASTQ.gz format, and maximum file size is capped at 5Gb per file.
+        
+        <div class="introimg">
+            <div>Upload FASTQ to the cloud</div>
+            <div>Schedule alignment</div>
+            <div>Get results</div>
+            <div class="item1"><img src="images/intropic.png" width="500px"></div>
+            <div id="smile"><img id="smiley" src="images/smily.png" width="70px"></div>
+        </div>
+        
+        <br>
+        We reserve the right to delete the uploaded FASTQ.gz files after a time course of 1 week. The alignment results will stay available online. The alignment will take about 10 minutes. If you are new to ELYSIUM visit the <a href="javascript:showStartHelp();">help section</a>. You can enter your e-mail and a password which will be used as your username and login credential. The uploaded data will not be accessible by others.
+        
+        </div>
+        
+        
+        <h1></h1>
+        <hr>
+        
+    <form>
+        <div id="memuser"></div>
+        
+      <div class="form-group emailfield">
+        <label for="email">Email address</label>
+        <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+      </div>
+      <div class="form-group passfield">
+        <label for="passwd">Password</label>
+        <input type="password" class="form-control" id="passwd" placeholder="Password">
+      </div>
+      <div id="errorflag"></div>
+      <button type="submit" class="btn btn-primary letsgo" id="letsgo">Start</button>
+    </form>
+    
+    <hr>
+    <div id="disclaimer">ELYSIUM is a new application under development so please send us 
+        <script>
+        document.writeln("<a href='mailto:"+"ale"+"xan"+"der."+"lac"+"hman"+"n@ms"+"sm.e"+"du?subject=ELYSIUM&cc=av"+"i.ma"+"aya"+"n@ms"+"sm.e"+"du'>Feedback</a>");
+        </script>
+        
+    </a> so we can improve it.</div>
+    </div>
+    
+    <div id="zebrapattern2"><img src="images/zebrathin.png" width="720px"></div>
+
+    </div>
+    <div id="tile_container" class="grid-container"></div>
+    <div id="question">?</div>
+    
+    <div id="jobstatus" style="left: 600px;"></div>
+    <div id="help">
+        
+        <div></div>
+        <div id="helptitle">
+            <div id="closehelp">X</div>
+            <img src="images/bubble.png" width=620>
+            <div id="bubbletext">You look like you are trying to align sequences. Do you want some help with that?</div>
+            
+        </div>
+        
+        <img id="pipetty" src="images/pipetty.png" width=120>
+        
+        <div id="helpcontent">
+            
+            <h2>About</h2>
+            ELYSIUM is a free to use online RNA-seq alignment tool. It supports fast data upload and processing on a scalable cloud infrastructure. This is the help page for the ELYSIUM resource explaining the functionality of this website. This is still an early version of the software and might encounter unforseen issues. Please help us to improve the experience by giving us
+            <script>
+                document.writeln("<a href='mailto:"+"ale"+"xan"+"der."+"lac"+"hman"+"n@ms"+"sm.e"+"du?subject=ELYSIUM&cc=av"+"i.ma"+"aya"+"n@ms"+"sm.e"+"du'>Feedback</a>");
+            </script>
+            .
+            <hr>
+            <h2>Example workflow</h2>
+            In order to retrieve transcript quantification and gene counts three steps have to be performed. First the user has to log into the system, upload data and then submit alignment jobs to the processing queue. The alignment algorithm used is <a href="https://pachterlab.github.io/kallisto/about">Kallisto</a>. Qualitative alignment comparisons between Kallisto and STAR were performed for the <a href="https://www.nature.com/articles/s41467-018-03751-6">ARCHS4 publication</a>.<br><br><hr>
+            
+            <div id="gifview">
+            
+            <div><img class="gifview" src="images/login.gif"></div>
+            <div>
+                <b>Account creation and Login</b><br>
+                <p>
+                    The starting page will display a login field for email and password. If you do not have an account with ELYSIUM you can enter your email of choice and password. The account will automatically be created and you will be redirected into the workspace view. All data and jobs submitted will be accessible through those credentials. You can use the same email and password to access results at a later time.
+                </p>
+                <p>
+                    Creating user accounts and using this service are currently free of charge and we are hoping to offer it for free in the future. Due to large data sizes we can't guarantee availability of data and service indefinitly, please take appropriate action in backing up your files. We will not share your data now or in the future.
+                </p>
+            </div>
+            
+            <div><img class="gifview" src="images/upload.gif"></div>
+            <div>
+                <b>Uploading files</b><br>
+                <p>
+                    ELYSIUM is using cloud computing so the data has to go where the compute instances are. Data will be uploaded to Amazon S3. The current supported data format is <b>FASTQ.gz</b>. If you are using windows we recommend <a href="https://www.7-zip.org/" target="_blank">7-zip</a>.
+                    <br><br>
+                    The maximal file size currently supported for upload is <b>5GB</b>.
+                </p>
+                
+                
+            </div>
+            
+            <div><img class="gifview" src="images/submit.gif"></div>
+            <div>
+                <b>Submitting alignment job</b><br>
+                <p>
+                    ELYSIUM supports single and paired end read alignment. When files have been uploaded to the workspace a single or two files can be selected from the list. Upon selection the submission dialog will appear. Here the name of the job can be selected and the species genome against which the alignment should be performed.
+                    <br><br>
+                    Once submitted the job will be sent to a queue and processed on a first come first serve basis.
+                </p>
+                
+            </div>
+            
+            <div><img class="gifview" src="images/download.gif"></div>
+            <div>
+                <b>Retrieving results</b><br>
+                <p>
+                    The processing takes about 15 minutes independent of the number of samples. After successful completion of the alignment the result section will contain 3 links labled Transcript Counts, Gene Counts and Alignment Info. The Transcript Counts are the raw Kallisto output. The Gene Counts result contains counts per gene with all corresponding transcript counts summed up. Alignment Info contains <a href="https://pachterlab.github.io/kallisto/about">Kallisto</a> information about parameters and alignment statistics. The gene counts are compatible with the <a href="https://amp.pharm.mssm.edu/archs4/" target="_blank">ARCHS4</a> resource.
+                </p>
+            </div>
+            
+            </div>
+            
+            <hr>
+            
+            <h2>Job queue status</h2>
+            ELYSIUM uses a scalable cloud computing backend. Once a job is submitted it will enter a waiting queue. All jobs are processed on a first come first serve order. Most submitted alignment jobs should complete in about 10-15 minutes. The state of the job is displayed in the job queue view. A submitted job can have four states: 
+            <br>
+            <div id="statusinfo">
+                <div>
+                    <img src="images/pending.png" width=40>
+                </div>
+                <div id="jobinfoitem"><b>Pending:</b> job is waiting to be processed by available resource</div>
+                <div>
+                    <img src="images/submitted.png" width=40>
+                </div>
+                <div id="jobinfoitem"><b>Submitted:</b> job left queue and is currently processing</div>
+                <div>
+                    <img src="images/completed.png" width=40>
+                </div>
+                <div id="jobinfoitem"><b>Completed:</b> job completed successfully</div>
+                <div>
+                    <img src="images/error.png" width=40>
+                </div>
+                <div id="jobinfoitem"><b>Failed:</b> job timed out during submission process</div>
+            </div>
+            <hr>
+            <h2>Output format</h2>
+            After alignment completion ELYSIUM will display 3 text files for download in the job list on the right of the screen. The files will be accessible through the user credentials provided on job sumbission.
+            <br><br><img src="images/resultimg.png"><br><br>
+            
+            <b>Transcript Counts</b><br>
+            The Transcript Count file contains 5 columns. The first column contains the Ensembl transcript ID (e.g. ENST00000448914.1) followed by transcript length and effective transcript length. The last two columns are the transcript quantification and TPM. Kallistos transcript quantification does not have to be an integer but can be treated as a read count.
+            <br><br>
+            
+            <b>Gene Counts</b><br>
+            This file contains 2 columns. The first is official gene symbols and the second is the sum of all transcript counts mapping to the corresponding gene.
+            <br><br>
+            
+            <b>Alignment Info</b><br>
+            Kallisto generates an information file containing the number of reads in the input file as well as the number of successfully aligned reads. Additionally it will estimate the fragment length in paired end read jobs. For single file alignment the default will be a fragment length of 200bp.
+            <br><br>
+            
+            <hr>
+            <h2>Pipeline</h2>
+            The pipeline of ELYSIUM is utilizing two APIs for uploading data to S3 and scheduling alignment jobs. The upload API Charon allows the generation of encrypted tokens that allow users to directly upload data to S3. Elysium is the API that controls job submissions to the cloud backend and contains the ELYSIUM interface. For processing of the FASTQ files we deply Docker container to an Amazon compute cluster and scale the resources depending on demand.
+            <br><br>
+             Human samples are aligned against the GRCh38 human reference genome, and mouse samples against the GRCm38 mouse reference genome. For transcript annotation Homo_sapiens.GRCh38.cdna.all.fa.gz and Mus_musculus.GRCm38.cdna.all.fa.gz from Ensembl are used. The Kallisto index files can be accessed at the <a href="https://amp.pharm.mssm.edu/archs4/download.html" target="_blank"> ARCHS4 download page</a>.
+            
+            <hr>
+            
+            <h2>Terms of use</h2>
+            
+                Source code is available on GitHub under the Apache Licence 2.0.
+                Commercial users should contact Mount Sinai Innovation Partners at MSIPInfo@mssm.edu.
+                
+                <h3>GitHub repositories</h3>
+                <a href="https://github.com/maayanlab/charon" target="_blank">https://github.com/lachmann12/charon</a><br>
+                <a href="https://github.com/maayanlab/elysium" target="_blank">https://github.com/lachmann12/elysium</a>
+                
+                <h3>Citation</h3>
+
+                ELYSIUM is currently not published. You can consider citing ARCHS4 as ELYSIUM shares the alignment backend with this publication.<br>
+                Please acknowledge ARCHS4 in your publications by citing the following reference:
+                Lachmann A, Torre D, Keenan AB, Jagodnik KM, Lee HJ, Wang L, Silverstein MC, Ma’ayan A. Massive mining of publicly available RNA-seq data from human and mouse. Nature Communications 9. Article number: 1366 (2018), doi:10.1038/s41467-018-03751-6
+
+                <h3>Disclaimer</h3>
+                ELYSIUM is not to be used for treating or diagnosing human subjects. ELYSIUM or any documents available from this server are provided as is without any warranty of any kind, either express, implied, or statutory, including, but not limited to, any implied warranties of merchantability, fitness for particular purpose and freedom from infringement, or that ELYSIUM or any documents available from this server will be error free. The Ma'ayan lab makes no representations that the use of ELYSIUM or any documents available from this server will not infringe any patent or proprietary rights of third parties. In no event will the Ma'ayan lab or any of its members be liable for any damages, including but not limited to direct, indirect, special or consequential damages, arising out of, resulting from, or in any way connected with the use of ELYSIUM or documents available from this server. 
+
+            <hr>
+            
+            <div id="helpfooter">
+                <div>
+                   <img src="images/mountsinai.png" style="padding-bottom:10px;" height=100><br>
+                </div>
+                
+                <div>
+                     <ul style="padding-left: 30px; list-style: none; text-align: left;">
+                        <li class="fl"><a href="http://icahn.mssm.edu/research/labs/maayan-laboratory" target="_blank">The Ma'ayan Lab</a></li>
+                        <li class="fl"><a href="http://www.lincs-dcic.org/" target="_blank">BD2K-LINCS Data Coordination and Integration Center (DCIC)</a></li>
+                        <li class="fl"><a href="http://www.lincsproject.org/">NIH LINCS program</a></li>
+                        <li class="fl"><a href="http://bd2k.nih.gov/" target="_blank">NIH Big Data to Knowledge (BD2K)</a></li>
+                        <li class="fl"><a href="https://commonfund.nih.gov/idg/index" target="_blank">NIH Illuminating the Druggable Genome (IDG) Program</a></li>
+                        <li class="fl"><a href="http://icahn.mssm.edu/" target="_blank">Icahn School of Medicine at Mount Sinai</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <img src="images/dcic.png" height=100><br>
+                    © Ma'ayan Lab.
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--
+    <div class="ELYSIUM-container" ontouchstart="this.classList.toggle('hover');">
+        <div class="ELYSIUMper">
+            <div class="front backtile">
+                A
+            </div>
+            <div class="back backtile">
+                B
+            </div>
+        </div>
+    </div>
+    -->
+    
+</body>
+</html>

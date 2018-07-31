@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Flip</title>
+    <title>Elysium</title>
     
     <link rel="icon" href="images/smily.png?v=3" type="image/png">
     
@@ -23,6 +23,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretty-checkbox@3.0/dist/pretty-checkbox.min2.css">
     <script src="js/jqueryform.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    
+    <script src="js/prettify.js"></script>
     
     <link rel="stylesheet" href="css/css.css">
 <style>
@@ -86,21 +88,21 @@ body{
   overflow: hidden;
   height: 100%;
   
-  -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-     -khtml-user-select: none; /* Konqueror HTML */
-       -moz-user-select: none; /* Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none; /* Non-prefixed version, currently
-                                  supported by Chrome and Opera */
   opacity: 0.9;
 }
 
 /* entire container, keeps perspective */
 .flip-container {
+    -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
     perspective: 1000px;
 }
-/* flip the pane when hovered */
+/* Elysium the pane when hovered */
 .flip-container:hover .flipper, .flip-container.hover .flipper {
     transform: rotateY(180deg);
 }
@@ -114,7 +116,7 @@ body{
     height: 100px;
 }
 
-/* flip speed goes here */
+/* Elysium speed goes here */
 .flipper {
     transition: 0.3s;
     transform-style: preserve-3d;
@@ -146,7 +148,7 @@ body{
 }
 
 /* 
-    Some vertical flip updates 
+    Some vertical Elysium updates 
 */
 .vertical.flip-container {
     position: relative;
@@ -179,7 +181,7 @@ body{
     
     text-align: center;
     vertical-align: middle;
-    line-height: 100px; 
+    line-height: 100px;
 }
 
 #intro{
@@ -277,7 +279,6 @@ a:active {
     margin-left: -40px;
     margin-top: 20px;
     margin-bottom: -160px;
-    background-color: green;
 }
 
 #letsgo{
@@ -313,8 +314,8 @@ a:active {
 
 #love{
     position: absolute;
-    top: 3;
-    left: 84px;
+    top: 12;
+    left: 120px;
 }
 
 .buttonlove{
@@ -325,11 +326,12 @@ a:active {
 #jobcreate {
     -webkit-transition-duration: 0.4s; /* Safari */
     transition-duration: 0.4s;
-    border: 2px solid lightgrey;
+    border: 2px solid #eeeeee;
     height: 50px;
     text-align: center;
     overflow: hidden;
     vertical-align: middle;
+    background-color:  #eeeeee;
     
 }
 
@@ -348,21 +350,48 @@ a:active {
     color: white;
 }
 
-#uploadbutton {
+.letsgo{
     -webkit-transition-duration: 0.4s; /* Safari */
     transition-duration: 0.4s;
-    border: 2px solid lightgrey;
+    border: 2px solid #eeeeee;
     height: 50px;
     text-align: center;
     overflow: hidden;
     vertical-align: middle;
+    background-color:  #eeeeee;
+    color: grey;
+    width: 640px;
+    font-size: 20px;
+}
+
+.letsgo:hover {
+    /* background-color: #4CAF50; Green */
+    border: 2px solid lightgrey;
+    background-color:  #eeeeee;
+    color: black;
+}
+
+.letsgo:active {
+    /* background-color: #4CAF50; Green */
+    background-color: #1f82f1;
+    color: white;
+}
+
+#uploadbutton {
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    border: 2px solid #eeeeee;
+    height: 50px;
+    text-align: center;
+    overflow: hidden;
+    vertical-align: middle;
+    color: black;
     
 }
 
 #uploadbutton:hover {
     /* background-color: #4CAF50; Green */
-    border: 2px solid lightgreen;
-
+    border: 2px solid lightgrey;
 }
 
 #uploadbutton:active {
@@ -433,7 +462,7 @@ a:active {
     
     font-size: 60px;
     position: absolute;
-    background-color: white;
+    background-color: #eeeeee;
     width: 100px;
     height: 80px;
     z-index: 1;
@@ -445,6 +474,7 @@ a:active {
     font-weight: bold;
     text-align: left;
     padding-left: 8px;
+    
     display: none;
     
     cursor: pointer;
@@ -463,8 +493,36 @@ a:active {
     /*Raleway|Roboto|Shrikhand|Spirax|Slabo 27px|Indie Flower|Poor Story|Press Start 2P*/
 }
 
-#help{
+#question:hover{
+    background-color: #ffffff;
+}
+
+#closehelp{
     
+    font-size: 60px;
+    position: relative;
+    
+    left: 700;
+    
+    width: 1px;
+    height: 1px;
+    z-index: 1;
+    top: -40px;
+    
+    font-family: 'Spirax', sans-serif;
+    font-weight: bold;
+    text-align: left;
+    padding-left: 8px;
+    
+    cursor: pointer;
+}
+
+#closehelp:hover{
+    color: red;
+}
+
+#help{
+    display: none;
     
     padding: 30px;
     top: 20px;
@@ -485,13 +543,6 @@ a:active {
     -webkit-box-shadow: 1px 1px 3px 3px rgba(0, 0, 0, 0.4);  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
     -moz-box-shadow:    1px 1px 3px 3px rgba(0, 0, 0, 0.4);  /* Firefox 3.5 - 3.6 */
     box-shadow:         1px 1px 3px 3px rgba(0, 0, 0, 0.4);  /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
-    
-  -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-     -khtml-user-select: none; /* Konqueror HTML */
-       -moz-user-select: none; /* Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none; /* Non-prefixed version, currently */
 }
 
 #helptitle{
@@ -504,12 +555,24 @@ a:active {
 
 #helpcontent{
     text-align: left;
+    top: -40;
 }
 
 #pipetty{
     float: right;
 }
 
+#bubble{
+    z-index: 2;
+}
+
+#bubbletext{
+    position: relative;
+    top: -155;
+    width: 500px;
+    padding-left: 30px;
+    height: 60px;
+}
 
 #statusinfo{
     padding-top: 20px;
@@ -536,6 +599,19 @@ a:active {
     border: 1px solid black;
 }
 
+#helpfooter{
+    padding-top: 10px;
+    padding-left: 0px;
+    display: grid;
+    grid-gap: 20px;
+    grid-template-columns: auto auto auto;
+}
+
+#usercredentials{
+    top: 0px;
+    height: 14px;
+}
+
 </style>
 
 <script>
@@ -543,6 +619,8 @@ a:active {
     var colors = ["#ffffff", "#ef1e57", "#ffeb95", "#d3a1bc", "#15564e"];
     var username = getCookie("username");
     var password = getCookie("password");
+    var loggedin = false;
+    
     
     $( document ).ready(function() {
         
@@ -630,13 +708,9 @@ a:active {
             $(".emailfield").hide();
             $(".passfield").hide();
             
-            $("#memuser").html("Logged in as <b>"+username+"</b>.<br><a href=\"javascript:logout();\">Log out</a>");
+            $("#memuser").html("Signed in as <b>"+username+"</b><br><a href=\"javascript:logout();\">Sign out</a>");
             $("#memuser").show();
         }
-        
-        $('#question').mouseenter(function() {
-            $(this).effect( "bounce", { times: 1, direction: "left", distance: 5});
-        });
         
         $('#question').on( "click", function() {
             $("#help").fadeIn();
@@ -645,9 +719,15 @@ a:active {
             $("#question").toggle();
         });
         
-        //setInterval(function() {
-        //  blink();
-        //}, 5000);
+        $('#closehelp').on( "click", function() {
+            $("#help").toggle();
+            $(".contentPane").fadeIn();
+            if(loggedin){
+                $("#jobstatus").fadeIn();
+                $("#question").delay(300).fadeIn();
+            }
+        });
+        
     });
     
     (function loop() {
@@ -768,12 +848,16 @@ a:active {
     function createjob(){
       
       organismbuff = $('#organismselector').find(":selected").text();
+      outname = $("#outname").val()
+      if(outname == ""){
+          outname = Math.random().toString(36).substring(7);
+      }
       
       if($('input:checked').length == 1) {
-        url = "https://amp.pharm.mssm.edu/cloudalignment/createjob?username="+username+"&password="+password+"&outname="+$("#outname").val()+"&file1="+$("#file1").val()+"&organism="+organismbuff.toLowerCase();
+        url = "https://amp.pharm.mssm.edu/cloudalignment/createjob?username="+username+"&password="+password+"&outname="+outname+"&file1="+$("#file1").val()+"&organism="+organismbuff.toLowerCase();
       }
       else if($('input:checked').length == 2) {
-        url = "https://amp.pharm.mssm.edu/cloudalignment/createjob?username="+username+"&password="+password+"&outname="+$("#outname").val()+"&file1="+$("#file1").val()+"&file2="+$("#file2").val()+"&organism="+organismbuff.toLowerCase();
+        url = "https://amp.pharm.mssm.edu/cloudalignment/createjob?username="+username+"&password="+password+"&outname="+outname+"&file1="+$("#file1").val()+"&file2="+$("#file2").val()+"&organism="+organismbuff.toLowerCase();
       }
       
       $.getJSON( url, function( data ) {
@@ -793,7 +877,7 @@ a:active {
             
             counter = 0
             for(i=(filename.length-1); i>=0; i--){
-              if(filename[i].includes(".fastq")){
+              if(filename[i].includes(".fastq") || filename[i].includes(".fq")){
                 counter = counter + 1;
                 fstr = "<span id=\"fn"+counter+"\">"+filename[i]+"</span><span style=\"float:right;\"><font color=\"grey\">"+filesize[i]+"</font></span>";
                 fstr = "<label class=\"container\">"+fstr+"<input id=\"c"+counter+"\" class=\"seqcheck\" type=\"checkbox\"><span id=\"cm"+counter+"\" class=\"checkmark\"></span></label>"
@@ -817,6 +901,9 @@ a:active {
     
     function checkBox(num, event){
       var maxed = 0;
+      
+      $("#file1").val("");
+      $("#file2").val("");
       
       if($('input:checked').length == 0) {
         $("#submitjob").hide();
@@ -913,7 +1000,7 @@ a:active {
     }
     
     function letsgo(){
-        
+        loggedin = true;
         $('#letsgo').animate({'opacity': 0, 'left' : '700px'}, "slow");
         var smile = $("#smiley");
         var psmile = smile.position();
@@ -930,7 +1017,7 @@ a:active {
             "<input id=\"signature\" name=\"signature\" value=\"x\" type=\"hidden\">"+
             "<input name=\"Content-Type\" value=\"application/octet-stream\" type=\"hidden\">"+
             
-            "<div id=\"uploadform\">Upload FASTQ.gz files for alignment with FLIP</div><div id=\"fileinfo\">The FASTQ files have to be compressed with gzip and should be smaller than 5GB. Once uploaded a single file or two files for paired alignment can be selected. A menu will appear in which job name and species can be specified.</div>"+
+            "<div id=\"uploadform\">Upload FASTQ.gz files for alignment with Elysium</div><div id=\"fileinfo\">The FASTQ files have to be compressed with gzip and should be smaller than 5GB. Once uploaded a single file or two files for paired alignment can be selected. A menu will appear in which job name and species can be specified.</div>"+
             "<input name=\"file\" type=\"file\">"+
             "<br>"+
             "<button type=\"button\" id=\"uploadbutton\" class=\"btn btn-lg btn-block btn-outline-primary\" onclick=\"upload();\">Upload File</button>"+
@@ -966,7 +1053,9 @@ a:active {
               "</form>"+
             "</div>";
         
-        $('#leftcontent').html(form1+progressbar+responsetext+submitjobtext);
+        var logininfo = "<div id=\"usercredentials\"><b>"+username+"</b> <a style=\"float: right;\" href=\"javascript:logout();\">Sign out</a></div>"
+        
+        $('#leftcontent').html(form1+progressbar+responsetext+submitjobtext+logininfo);
         $('.contentPane').animate({left: "300px"});
         
         smile.appendTo("#leftpane")
@@ -975,7 +1064,7 @@ a:active {
         $('#smiley').css({position: 'fixed'});
         smile.css({top: psmile.x, left: psmile.y})
         $('#smiley').animate({height: "1600px", width: "1600px", top: "-600px", left: "-600px"}, 600, 'linear');
-        $("#namebanner").html("FLIP");
+        $("#namebanner").html("Elysium");
         //$('#leftcontent').css({height: height+'px'});
         
         $('#smiley').animate({height: "56px", width: "56px", top: "12px", left: "424px"}, 400, 'linear')
@@ -1021,11 +1110,15 @@ a:active {
     }
     
     function blink(){
-        console.log("blink");
         $('#pipetty').attr('src', "images/pipettyblink.png").delay(250).queue( function() {
             $("#pipetty").attr('src', "images/pipetty.png")
             $( this ).dequeue();
         });
+    }
+    
+    function showStartHelp(){
+        $("#help").fadeIn();
+        $(".contentPane").toggle();
     }
     
 </script>
@@ -1035,14 +1128,14 @@ a:active {
 <body>
     <div class="contentPane" id="leftpane">
         <div id="zebrapattern">
-            <img src="images/zebrathin.png" width="713px"><h1 class="headfont" id="namebanner">FLIP: RNA-seq alignment</h1>
-            <img id="love" src="images/heart.png" width="14px">
+            <img src="images/zebrathin.png" width="713px"><h1 class="headfont" id="namebanner">Elysium: cloud alignment</h1>
+            <img id="love" src="images/heart.png" width="20px">
         </div>
         <div id="leftcontent">
             
         <div id="intro">
         
-        is a light-weight sequence alignment server. With FLIP you can efficiently and freely align your FASTQ files against the human or mouse genome. The pipeline is compatible with the ARCHS4 transcript quantification pipeline implementing the Kallitso aligner.  Please note that supported file uploads can be in FASTQ or FASTQ.gz format, and maximum file size is capped at 5Gb per file.
+        Elysium is a light-weight sequence alignment server. With Elysium you can efficiently and freely align your FASTQ files against the human or mouse genome. The pipeline is compatible with the ARCHS4 transcript quantification pipeline implementing the Kallitso aligner.  Please note that supported file uploads can be in FASTQ or FASTQ.gz format, and maximum file size is capped at 5Gb per file.
         
         <div class="introimg">
             <div>Upload FASTQ to the cloud</div>
@@ -1052,10 +1145,8 @@ a:active {
             <div id="smile"><img id="smiley" src="images/smily.png" width="70px"></div>
         </div>
         
-        
-        
         <br>
-        We reserve the right to delete the uploaded FASTQ.gz files after a time course of 1 week. The alignment results will stay available online. The alignment will take about 10 minutes. If you are new to Flip you can just enter your e-mail and a password which will be used as your username and login credential. The uploaded data will not be accessible by others.
+        We reserve the right to delete the uploaded FASTQ.gz files after a time course of 1 week. The alignment results will stay available online. The alignment will take about 10 minutes. If you are new to Elysium visit the <a href="javascript:showStartHelp();">help section</a>. You can enter your e-mail and a password which will be used as your username and login credential. The uploaded data will not be accessible by others.
         
         </div>
         
@@ -1079,9 +1170,9 @@ a:active {
     </form>
     
     <hr>
-    <div id="disclaimer">FLIP is a new application under development so please send us 
+    <div id="disclaimer">Elysium is a new application under development so please send us 
         <script>
-        document.writeln("<a href='mailto:"+"ale"+"xan"+"der."+"lac"+"hman"+"n@ms"+"sm.e"+"du'>Feedback</a>");
+        document.writeln("<a href='mailto:"+"ale"+"xan"+"der."+"lac"+"hman"+"n@ms"+"sm.e"+"du?subject=Elysium&cc=av"+"i.ma"+"aya"+"n@ms"+"sm.e"+"du'>Feedback</a>");
         </script>
         
     </a> so we can improve it.</div>
@@ -1092,12 +1183,16 @@ a:active {
     </div>
     <div id="tile_container" class="grid-container"></div>
     <div id="question">?</div>
+    
     <div id="jobstatus" style="left: 600px;"></div>
     <div id="help">
         
         <div></div>
         <div id="helptitle">
-            You look like you are trying to align sequences. Do you want some help with that?
+            <div id="closehelp">X</div>
+            <img src="images/bubble.png" width=620>
+            <div id="bubbletext">My name is Pipetti and I am here to help you with your RNA-seq alignment needs!</div>
+            
         </div>
         
         <img id="pipetty" src="images/pipetty.png" width=120>
@@ -1105,14 +1200,15 @@ a:active {
         <div id="helpcontent">
             
             <h2>About</h2>
-            FLIP is a free to use online RNA-seq alignment tool. It supports fast data upload and processing on a scalable cloud infrastructure. This is the help page for the FLIP resource. Here we show a sime display of what this website can do. This is still an early version of the software and might encounter unforseen issues. Please help us to improve the experience by giving us
+            Elysium is a free to use online RNA-seq alignment tool. It supports fast data upload and processing on a scalable cloud infrastructure. This is the help page for the Elysium resource explaining the functionality of this website. This is still an early version of the software and might encounter unforseen issues. Please help us to improve the experience by giving us
             <script>
-                document.writeln("<a href='mailto:"+"ale"+"xan"+"der."+"lac"+"hman"+"n@ms"+"sm.e"+"du'>Feedback</a>");
+                document.writeln("<a href='mailto:"+"ale"+"xan"+"der."+"lac"+"hman"+"n@ms"+"sm.e"+"du?subject=Elysium&cc=av"+"i.ma"+"aya"+"n@ms"+"sm.e"+"du'>Feedback</a>");
             </script>
             .
             <hr>
             <h2>Example workflow</h2>
-            In order to retrieve transcript quantification and gene counts three steps have to be performed. First the user has to log into the system, upload data and then submit alignment jobs to the processing queue.<br><br><hr>
+            In order to retrieve transcript quantification and gene counts three steps have to be performed. First the user has to log into the system, upload data and then submit alignment jobs to the processing queue. The alignment algorithm used is <a href="https://pachterlab.github.io/kallisto/about">Kallisto</a>. Qualitative alignment comparisons between Kallisto and STAR were performed for the <a href="https://www.nature.com/articles/s41467-018-03751-6">ARCHS4 publication</a>.
+            <br><hr>
             
             <div id="gifview">
             
@@ -1120,10 +1216,10 @@ a:active {
             <div>
                 <b>Account creation and Login</b><br>
                 <p>
-                    The starting page will display a login field for email and password. If you do not have an account with FLIP you can enter your email of choice and password. The account will automatically be created and you will be redirected into the workspace view. All data and jobs submitted will be accessible through those credentials. You can use the same email and password to access results at a later time.
+                    The starting page will display a login field for email and password. If you do not have an account with Elysium you can enter your email of choice and password. The account will automatically be created and you will be redirected into the workspace view. All data and jobs submitted will be accessible through those credentials. You can use the same email and password to access results at a later time.
                 </p>
                 <p>
-                    Creating user accounts and using this service are free of charge.
+                    Creating user accounts and using this service are currently free of charge and we are hoping to offer it for free in the future. Due to large data sizes we can't guarantee availability of data and service indefinitly, please take appropriate action in backing up your files. We will not share your data now or in the future.
                 </p>
             </div>
             
@@ -1131,7 +1227,7 @@ a:active {
             <div>
                 <b>Uploading files</b><br>
                 <p>
-                    FLIP is using cloud computing so the data has to go where the compute instances are. Data will be uploaded to Amazon S3. The current supported data format is <b>FASTQ.gz</b>. If you are using windows we recommend <a href="https://www.7-zip.org/" target="_blank">7-zip</a>.
+                    Elysium is using cloud computing so the data has to go where the compute instances are. Data will be uploaded to Amazon S3. The current supported data format is <b>FASTQ.gz</b>. If you are using windows we recommend <a href="https://www.7-zip.org/" target="_blank">7-zip</a>.
                     <br><br>
                     The maximal file size currently supported for upload is <b>5GB</b>.
                 </p>
@@ -1143,7 +1239,7 @@ a:active {
             <div>
                 <b>Submitting alignment job</b><br>
                 <p>
-                    FLIP supports single and paired end read alignment. When files have been uploaded to the workspace a single or two files can be selected from the list. Upon selection the submission dialog will appear. Here the name of the job can be selected and the species genome against which the alignment should be performed.
+                    Elysium supports single and paired end read alignment. When files have been uploaded to the workspace a single or two files can be selected from the list. Upon selection the submission dialog will appear. Here the name of the job can be selected and the species genome against which the alignment should be performed.
                     <br><br>
                     Once submitted the job will be sent to a queue and processed on a first come first serve basis.
                 </p>
@@ -1154,7 +1250,7 @@ a:active {
             <div>
                 <b>Retrieving results</b><br>
                 <p>
-                    The processing takes about 15 minutes. After successful completion of the alignment the result section will contain 3 links labled Transcript Counts, Gene Counts and Alignment Info. The transcript Counts is the raw Kallisto output. The Gene Counts result contains counts per gene with all corresponding transcript counts summed up. Alignment Info contains Kallisto information about parameters and alignment statistics. The gene counts are compatible with the <a href="https://amp.pharm.mssm.edu/archs4/" target="_blank">ARCHS4</a> resource.
+                    The processing takes about 15 minutes independent of the number of samples. After successful completion of the alignment the result section will contain 3 links labled Transcript Counts, Gene Counts and Alignment Info. The Transcript Counts are the raw Kallisto output. The Gene Counts result contains counts per gene with all corresponding transcript counts summed up. Alignment Info contains <a href="https://pachterlab.github.io/kallisto/about">Kallisto</a> information about parameters and alignment statistics. The gene counts are compatible with the <a href="https://amp.pharm.mssm.edu/archs4/" target="_blank">ARCHS4</a> resource.
                 </p>
             </div>
             
@@ -1163,7 +1259,7 @@ a:active {
             <hr>
             
             <h2>Job queue status</h2>
-            FLIP uses a scalable cloud computing backend. Once a job is submitted it will enter a waiting queue. All jobs are processed on a first come first serve order. Most submitted alignment jobs should complete in about 10-15 minutes. The state of the job is displayed in the job queue view. A submitted job can have four states: 
+            Elysium uses a scalable cloud computing backend. Once a job is submitted it will enter a waiting queue. All jobs are processed on a first come first serve order. Most submitted alignment jobs should complete in about 10-15 minutes. The state of the job is displayed in the job queue view. A submitted job can have four states: 
             <br>
             <div id="statusinfo">
                 <div>
@@ -1173,7 +1269,7 @@ a:active {
                 <div>
                     <img src="images/submitted.png" width=40>
                 </div>
-                <div id="jobinfoitem"><b>Submitted:</b> job left queue and is currently processed</div>
+                <div id="jobinfoitem"><b>Submitted:</b> job left queue and is currently processing</div>
                 <div>
                     <img src="images/completed.png" width=40>
                 </div>
@@ -1185,7 +1281,7 @@ a:active {
             </div>
             <hr>
             <h2>Output format</h2>
-            After alignment completion FLIP will display 3 text files for download in the job list on the right of the screen. The files will accessible through the user credentials provided on job sumbission.
+            After alignment completion Elysium will display 3 text files for download in the job list on the right of the screen. The files will be accessible through the user credentials provided on job sumbission.
             <br><br><img src="images/resultimg.png"><br><br>
             
             <b>Transcript Counts</b><br>
@@ -1199,10 +1295,76 @@ a:active {
             <b>Alignment Info</b><br>
             Kallisto generates an information file containing the number of reads in the input file as well as the number of successfully aligned reads. Additionally it will estimate the fragment length in paired end read jobs. For single file alignment the default will be a fragment length of 200bp.
             <br><br>
+            <hr>
+            
+            <h2>Compare gene expression to ARCHS4</h2>
+            The Elysium Gene Counts files are compatiple with ARCHS4. Similar samples can be highlighted in the 3D t-SNE plot. It does require some processing of the Gene Count file generated by Elysium. First download the <a href="https://s3.amazonaws.com/mssm-seq-matrix/human_matrix.h5">human_matrix.h5</a> or <a href="https://s3.amazonaws.com/mssm-seq-matrix/mouse_matrix.h5">mouse_matrix.h5</a> depending on the species of interest.<br>
+            
+            <br>
+            The gene expression sample has to be placed into the context of gene expression in the ARCHS4 data. The R script below will build two files containing gene symbols for genes with relative high expression and relative low expression.
+            <br><br>
+            <pre class="prettyprint" style="padding:20px;">
+<code># load libraries, they will first have to be installed from bioconductor
+library("rhdf5")
+library("preprocessCore")
+
+# set desired values here
+matrix_file = "human_matrix.h5"
+
+# file name of elysium gene count file
+elysium_file = "elysium-genecounts.tsv"
+
+# number of random samples the gene expression will be normalized against
+numberRandomSamples = 2000
+
+# number of genes in up and down gene files
+genesetSize = 200
+
+# Retrieve information from compressed data
+samples = h5read(matrix_file, "meta/Sample_geo_accession")
+genes = h5read(matrix_file, "meta/genes")
+
+# select numberRandomSamples random samples from ARCHS4
+sample_locations = sample(1:length(samples), numberRandomSamples)
+
+# extract gene expression from compressed data
+expression = h5read(matrix_file, "data/expression", index=list(1:length(genes), sample_locations))
+H5close()
+rownames(expression) = genes
+colnames(expression) = samples[sample_locations]
+
+# load your gene expression file from Elysium (Gene Counts)
+genecounts = read.table(elysium_file, sep="\t", stringsAsFactors=F)
+counts = round(genecounts[,2])
+names(counts) = genecounts[,1]
+
+# append your gene expression profile to the end as a column
+exp = cbind(expression, counts[genes])
+colnames(exp)[numberRandomSamples+1] = "mygenecounts"
+
+# normalize for gene count differences
+qexp = normalize.quantiles(exp)
+dimnames(qexp) = dimnames(exp)
+
+# scale the rows of the log2 transformed matrix with a z-score normalization
+zexp = t(scale(t(log2(1+qexp))))
+zexp[is.na(zexp)] = 0
+
+# get genesetSize top and bottom z-score genes (smallest to largest z-score)
+orderGenes = order(zexp[, numberRandomSamples+1])
+bottomGenes = zexp[orderGenes[1:genesetSize], numberRandomSamples+1]
+topGenes = zexp[rev(orderGenes)[1:genesetSize], numberRandomSamples+1]
+
+# print output
+writeLines(names(bottomGenes), con="down_genes.txt")
+writeLines(names(topGenes), con="up_genes.txt")</code></pre>
+            <br>
+            
+            Now navigate to the data visualization of ARCHS4 and select the Signature tab on the left. Make sure the correct species is active. Copy the up and down gene lists into the corresponding fields and submit the search. Similar samples should now be selected.
             
             <hr>
             <h2>Pipeline</h2>
-            The pipeline of FLIP is utilizing two APIs for uploading data to S3 and scheduling alignment jobs. The upload API Charon allows the generation of encrypted tokens that allow users to directly upload data to S3. Elysium is the API that controls job submissions to the cloud backend. For processing of the FASTQ files we deply Docker container to an Amazon compute cluster and scale the resources depending on demand.
+            The pipeline of Elysium is utilizing two APIs for uploading data to S3 and scheduling alignment jobs. The upload API Charon allows the generation of encrypted tokens that allow users to directly upload data to S3. Elysium is the API that controls job submissions to the cloud backend and contains the Elysium interface. For processing of the FASTQ files we deply Docker container to an Amazon compute cluster and scale the resources depending on demand.
             <br><br>
              Human samples are aligned against the GRCh38 human reference genome, and mouse samples against the GRCm38 mouse reference genome. For transcript annotation Homo_sapiens.GRCh38.cdna.all.fa.gz and Mus_musculus.GRCm38.cdna.all.fa.gz from Ensembl are used. The Kallisto index files can be accessed at the <a href="https://amp.pharm.mssm.edu/archs4/download.html" target="_blank"> ARCHS4 download page</a>.
             
@@ -1210,26 +1372,51 @@ a:active {
             
             <h2>Terms of use</h2>
             
-Source code is available under the Apache Licence 2.0.
-All data is free to use for non-commercial purposes. For commercial use please contact MSIP.
+                Source code is available on GitHub under the Apache Licence 2.0.
+                Commercial users should contact Mount Sinai Innovation Partners at <a href="mailto:MSIPInfo@mssm.edu">MSIPInfo@mssm.edu</a>.
+                
+                <h3>GitHub repositories</h3>
+                <a href="https://github.com/maayanlab/charon" target="_blank">https://github.com/maayanlab/charon</a><br>
+                <a href="https://github.com/maayanlab/elysium" target="_blank">https://github.com/maayanlab/elysium</a>
+                
+                <h3>Citation</h3>
 
-<h3>Citation</h3>
+                Elysium is currently not published. You can consider citing ARCHS4 as Elysium shares the alignment backend with this publication.<br>
+                Please acknowledge ARCHS4 in your publications by citing the following reference:
+                Lachmann A, Torre D, Keenan AB, Jagodnik KM, Lee HJ, Wang L, Silverstein MC, Ma’ayan A. Massive mining of publicly available RNA-seq data from human and mouse. Nature Communications 9. Article number: 1366 (2018), doi:10.1038/s41467-018-03751-6
+                <br>
+                <a href="https://www.nature.com/articles/s41467-018-03751-6" target="_blank">https://www.nature.com/articles/s41467-018-03751-6</a>
+                <h3>Disclaimer</h3>
+                Elysium is not to be used for treating or diagnosing human subjects. Elysium or any documents available from this server are provided as is without any warranty of any kind, either express, implied, or statutory, including, but not limited to, any implied warranties of merchantability, fitness for particular purpose and freedom from infringement, or that Elysium or any documents available from this server will be error free. The Ma'ayan lab makes no representations that the use of Elysium or any documents available from this server will not infringe any patent or proprietary rights of third parties. In no event will the Ma'ayan lab or any of its members be liable for any damages, including but not limited to direct, indirect, special or consequential damages, arising out of, resulting from, or in any way connected with the use of Elysium or documents available from this server. 
 
-FLIP is currently not published. You can consider citing ARCHS4 as FLIP shares the alignment backend with this publication.<br>
-Please acknowledge ARCHS4 in your publications by citing the following reference:
-Lachmann A, Torre D, Keenan AB, Jagodnik KM, Lee HJ, Wang L, Silverstein MC, Ma’ayan A. Massive mining of publicly available RNA-seq data from human and mouse. Nature Communications 9. Article number: 1366 (2018), doi:10.1038/s41467-018-03751-6
-
-<h3>Disclaimer</h3>
-FLIP is not to be used for treating or diagnosing human subjects. FLIP or any documents available from this server are provided as is without any warranty of any kind, either express, implied, or statutory, including, but not limited to, any implied warranties of merchantability, fitness for particular purpose and freedom from infringement, or that FLIP or any documents available from this server will be error free. The Ma'ayan lab makes no representations that the use of FLIP or any documents available from this server will not infringe any patent or proprietary rights of third parties. In no event will the Ma'ayan lab or any of its members be liable for any damages, including but not limited to direct, indirect, special or consequential damages, arising out of, resulting from, or in any way connected with the use of FLIP or documents available from this server. 
+            <hr>
             
-            
+            <div id="helpfooter">
+                <div>
+                   <img src="images/mountsinai.png" style="padding-bottom:10px;" height=100><br>
+                </div>
+                
+                <div>
+                     <ul style="padding-left: 30px; list-style: none; text-align: left;">
+                        <li class="fl"><a href="http://icahn.mssm.edu/research/labs/maayan-laboratory" target="_blank">The Ma'ayan Lab</a></li>
+                        <li class="fl"><a href="http://www.lincs-dcic.org/" target="_blank">BD2K-LINCS Data Coordination and Integration Center (DCIC)</a></li>
+                        <li class="fl"><a href="http://www.lincsproject.org/">NIH LINCS program</a></li>
+                        <li class="fl"><a href="https://commonfund.nih.gov/commons">NIH Data Commons Pilot Project Consortium (DCPPC)</a></li>
+                        <li class="fl"><a href="http://bd2k.nih.gov/" target="_blank">NIH Big Data to Knowledge (BD2K)</a></li>
+                        <li class="fl"><a href="https://commonfund.nih.gov/idg/index" target="_blank">NIH Illuminating the Druggable Genome (IDG) Program</a></li>
+                        <li class="fl"><a href="http://icahn.mssm.edu/" target="_blank">Icahn School of Medicine at Mount Sinai</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <img src="images/dcic.png" height=100><br>
+                    © Ma'ayan Lab.
+                </div>
+            </div>
         </div>
-        
-        
     </div>
     <!--
-    <div class="flip-container" ontouchstart="this.classList.toggle('hover');">
-        <div class="flipper">
+    <div class="Elysium-container" ontouchstart="this.classList.toggle('hover');">
+        <div class="Elysiumper">
             <div class="front backtile">
                 A
             </div>
@@ -1239,6 +1426,6 @@ FLIP is not to be used for treating or diagnosing human subjects. FLIP or any do
         </div>
     </div>
     -->
-    
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
 </body>
 </html>

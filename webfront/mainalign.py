@@ -17,6 +17,7 @@ import json
 import urllib
 import time
 import threading
+import math
 
 root = os.path.dirname(__file__)
 
@@ -36,7 +37,6 @@ maxinstances = int(os.environ['MAXINSTANCES'])
 awsid = os.environ['AWSID']
 awskey = os.environ['AWSKEY']
 
-currentInstances = 0
 
 def getConnection():
     db = MySQLdb.connect(host=dbhost,  # your host, usually localhost
@@ -45,11 +45,16 @@ def getConnection():
                      db=dbname)        # name of the data base
     return(db)
 
-def ec2thread(currentInstances, mininstances, maxinstances, scalefactor):
+def ec2thread(mininstances, maxinstances, scalefactor):
     while True:
         db = getConnection()
         cur = db.cursor()
         cur2 = db.cursor()
+        
+        # get current minsize (assuming equal to active instances)
+        asg = os.popen("/root/.local/bin/aws autoscaling describe-auto-scaling-groups --auto-scaling-group-name EC2ContainerService-cloudalignment-EcsInstanceAsg-HL25MFFL1T8Q").read()
+        jasg = json.loads(asg)
+        currentInstances = jasg['AutoScalingGroups'][0]['MinSize']
         
         query = "SELECT id, submissiondate FROM jobqueue WHERE status='submitted'"
         cur.execute(query)
@@ -66,8 +71,9 @@ def ec2thread(currentInstances, mininstances, maxinstances, scalefactor):
         cur.execute(query)
         count = cur.fetchone()[0]
         
+        # there is no jobs in the queue that are currently processing or waiting, scale number of nodes to mininstances
         if count == 0 and int(currentInstances) > int(mininstances):
-            currentInstances = mininstances #os.system("/root/.local/bin/aws autoscaling update-auto-scaling-group --auto-scaling-group-name EC2ContainerService-alignmentkallisto-EcsInstanceAsg-DQFAA0ZU041X --min-size "+str(mininstances)+" --max-size "+str(mininstances)+" --desired-capacity "+str(mininstances))
+            os.system("/root/.local/bin/aws autoscaling update-auto-scaling-group --auto-scaling-group-name EC2ContainerService-cloudalignment-EcsInstanceAsg-HL25MFFL1T8Q --min-size "+str(mininstances)+" --max-size "+str(mininstances)+" --desired-capacity "+str(mininstances))
         
         elif count > 0:
             cur = db.cursor()
@@ -75,11 +81,11 @@ def ec2thread(currentInstances, mininstances, maxinstances, scalefactor):
             cur.execute(query)
             count = cur.fetchone()[0]
             
-            instanceCount = str(max(max(1,mininstances), min(maxinstances, int(round(count/scalefactor)))))
+            instanceCount = str(max(mininstances, min(maxinstances, int(math.ceil(count/float(scalefactor))))))
             
             if int(instanceCount) > int(currentInstances):
                 print("scale up to "+str(instanceCount)+" from "+str(currentInstances))
-                currentInstances = instanceCount #os.system("/root/.local/bin/aws autoscaling update-auto-scaling-group --auto-scaling-group-name EC2ContainerService-alignmentkallisto-EcsInstanceAsg-DQFAA0ZU041X --min-size "+instanceCount+" --max-size "+instanceCount+" --desired-capacity "+instanceCount)
+                os.system("/root/.local/bin/aws autoscaling update-auto-scaling-group --auto-scaling-group-name EC2ContainerService-cloudalignment-EcsInstanceAsg-HL25MFFL1T8Q --min-size "+instanceCount+" --max-size "+instanceCount+" --desired-capacity "+instanceCount)
         
         db.close()
         time.sleep(30)
@@ -333,7 +339,7 @@ application = tornado.web.Application([
     (r"/cloudalignment/(.*)", tornado.web.StaticFileHandler, dict(path=root))
 ])
 
-ec2t = threading.Thread(target=ec2thread, args=(currentInstances, mininstances, maxinstances, scalefactor, ))
+ec2t = threading.Thread(target=ec2thread, args=(mininstances, maxinstances, scalefactor, ))
 ec2t.start()
 
 if __name__ == "__main__":
