@@ -19,6 +19,7 @@ import threading
 import sys
 import math
 import urllib3
+import traceback
 
 
 root = os.path.dirname(__file__)
@@ -82,6 +83,7 @@ def setFailing():
     query = "UPDATE jobqueue SET status='failed' WHERE status='submitted' AND TIMESTAMPDIFF(HOUR, submissiondate, NOW()) > 1"
     cur.execute(query)
     cur.close()
+    db.commit()
     db.close()
 
 def refillJobQueueARCHS4():
@@ -116,7 +118,11 @@ def ec2thread(mininstances, maxinstances, scalefactor):
     while True:
         try:
             setFailing()
-
+        except Exception:
+            print("failed to set failing")
+            traceback.print_exc()
+        
+        try:
             db = getConnection()
             cur = db.cursor()
             query = "SELECT id FROM jobqueue WHERE status='waiting' OR status='submitted' LIMIT 10"
@@ -135,12 +141,16 @@ def ec2thread(mininstances, maxinstances, scalefactor):
             elif counter == 0 and current_instance_count > 0:
                 lockUpdate = True
                 scaleGroup(mininstances)
-               
-        except:
-            print("Loop had an issue")
 
-        time.sleep(60)
-        lockUpdate = False
+        except Exception:
+            print("failed to scale")
+            traceback.print_exc()
+
+        try:
+            time.sleep(60)
+            lockUpdate = False
+        except Exception:
+            print("failed to sleep")
 
 class AlignmentProgressHandler(tornado.web.RequestHandler):
     def get(self):
@@ -149,11 +159,6 @@ class AlignmentProgressHandler(tornado.web.RequestHandler):
         password = self.get_argument('password', True)
         prefix = self.get_argument('prefix', True)
         pstatus = self.get_argument('status', True)
-        
-        print("in the get request function")
-        print(username)
-        print(password)
-        print(prefix)
         
         url = charon_url+"/login?username="+username+"&password="+password
         http = urllib3.PoolManager()
