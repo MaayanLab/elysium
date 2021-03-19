@@ -7,17 +7,19 @@ import io
 import string
 import random
 import requests
-import MySQLdb
+import pymysql
 import hashlib
 import base64
 import hmac
 import uuid
-import boto
+import boto3
 import json
-import urllib
 import time
 import threading
+import sys
 import math
+import urllib3
+
 
 root = os.path.dirname(__file__)
 
@@ -36,82 +38,134 @@ maxinstances = int(os.environ['MAXINSTANCES'])
 
 awsid = os.environ['AWSID']
 awskey = os.environ['AWSKEY']
+autoscaling_name = os.environ['AUTOSCALINGGROUP']
 
+minQueueSize = 20
+maxQueueSize = 100
+jobQueueARCHS4 = []
+
+lockUpdate = False
 
 def getConnection():
-    db = MySQLdb.connect(host=dbhost,  # your host, usually localhost
-                     user=dbuser,      # your username
-                     passwd=dbpasswd,  # your password
-                     db=dbname)        # name of the data base
-    return(db)
+    return pymysql.connect(host=dbhost, user=dbuser, password=dbpasswd, database=dbname)
+
+def getInstanceCount():
+    client = boto3.client('autoscaling',
+                          aws_access_key_id=awsid,
+                          aws_secret_access_key=awskey,
+                          region_name="us-east-1"
+                          )
+    response = client.describe_auto_scaling_groups(
+        AutoScalingGroupNames=[
+            autoscaling_name,
+        ]
+    )
+    res = response["AutoScalingGroups"][0]
+    return len(res['Instances'])
+
+def scaleGroup(size):
+    client = boto3.client('autoscaling',
+        aws_access_key_id=awsid,
+        aws_secret_access_key=awskey,
+        region_name="us-east-1"
+    )
+    response = client.update_auto_scaling_group(
+        AutoScalingGroupName=autoscaling_name,
+        MinSize=size,
+        MaxSize=size,
+        DesiredCapacity=size
+    )
+
+def refillJobQueueARCHS4():
+    
+    db = getConnection()
+    cur = db.cursor()
+    query = "SELECT id, uid, resultbucket, datalinks, parameters FROM sequencing WHERE status='waiting' LIMIT 100"
+    cur.execute(query)
+    
+    list_of_ids = []
+    
+    for res in cur:
+        list_of_ids.append(res[0])
+        response = {}
+        response["id"] = res[0]
+        response["uid"] = res[1]
+        response["type"] = "sequencing"
+        response["resultbucket"] = res[2]
+        response["datalinks"] = res[3]
+        response["parameters"] = res[4]
+        jobQueueARCHS4.append(response)
+    
+    format_strings = ','.join(['%s'] * len(list_of_ids))
+    
+    cur.execute("UPDATE sequencing SET status = 'submitted', datesubmitted=now() WHERE id IN (%s)" % format_strings, tuple(list_of_ids));
+    
+    db.commit()
+    cur.close()
+    db.close()
 
 def ec2thread(mininstances, maxinstances, scalefactor):
     while True:
-        db = getConnection()
-        cur = db.cursor()
-        cur2 = db.cursor()
-        
-        # get current minsize (assuming equal to active instances)
-        asg = os.popen("/root/.local/bin/aws autoscaling describe-auto-scaling-groups --auto-scaling-group-name EC2ContainerService-cloudalignment-EcsInstanceAsg-HL25MFFL1T8Q").read()
-        jasg = json.loads(asg)
-        currentInstances = jasg['AutoScalingGroups'][0]['MinSize']
-        
-        query = "SELECT id, submissiondate FROM jobqueue WHERE status='submitted'"
-        cur.execute(query)
-        for res in cur:
-            print((datetime.datetime.utcnow() - res[1]).total_seconds()/60)
-            if (datetime.datetime.utcnow() - res[1]).total_seconds()/60 > 60:
-                query = "UPDATE jobqueue SET status='failed' WHERE id='"+str(res[0])+"'"
-                cur2.execute(query)
-        
-        db.commit()
-        
-        cur = db.cursor()
-        query = "SELECT COUNT(*) FROM jobqueue WHERE status='submitted' OR status='waiting'"
-        cur.execute(query)
-        count = cur.fetchone()[0]
-        
-        # there is no jobs in the queue that are currently processing or waiting, scale number of nodes to mininstances
-        if count == 0 and int(currentInstances) > int(mininstances):
-            os.system("/root/.local/bin/aws autoscaling update-auto-scaling-group --auto-scaling-group-name EC2ContainerService-cloudalignment-EcsInstanceAsg-HL25MFFL1T8Q --min-size "+str(mininstances)+" --max-size "+str(mininstances)+" --desired-capacity "+str(mininstances))
-        
-        elif count > 0:
+        try:
+            
+            time.sleep(300)
+            db = getConnection()
             cur = db.cursor()
-            query = "SELECT COUNT(*) FROM jobqueue WHERE status='waiting'"
+            query = "SELECT id FROM jobqueue WHERE status='waiting' LIMIT 100"
             cur.execute(query)
-            count = cur.fetchone()[0]
+            cur.close()
+            db.close()
+            counter = 0
             
-            instanceCount = str(max(mininstances, min(maxinstances, int(math.ceil(count/float(scalefactor))))))
+            for res in cur:
+                counter = counter+1
             
-            if int(instanceCount) > int(currentInstances):
-                print("scale up to "+str(instanceCount)+" from "+str(currentInstances))
-                os.system("/root/.local/bin/aws autoscaling update-auto-scaling-group --auto-scaling-group-name EC2ContainerService-cloudalignment-EcsInstanceAsg-HL25MFFL1T8Q --min-size "+instanceCount+" --max-size "+instanceCount+" --desired-capacity "+instanceCount)
-        
-        db.close()
-        time.sleep(30)
+            current_instance_count = getInstanceCount()
+            
+            if counter > 0 and current_instance_count == 0:
+                scaleGroup(maxinstances)
+            elif counter == 0 and current_instance_count > 0:
+                time.sleep(600)
+                scaleGroup(mininstances)
+        except:
+            print("Loop had an issue")
 
 class AlignmentProgressHandler(tornado.web.RequestHandler):
     def get(self):
         self.set_header("Access-Control-Allow-Origin", "*")
         username = self.get_argument('username', True)
         password = self.get_argument('password', True)
+        prefix = self.get_argument('prefix', True)
         pstatus = self.get_argument('status', True)
         
-        url = charon_url+"/login?username="+username+"&password="+password
-        response = urllib.urlopen(url)
-        data = json.loads(response.read())
-        uuid = data["message"]
+        print("in the get request function")
+        print(username)
+        print(password)
+        print(prefix)
         
+        url = charon_url+"/login?username="+username+"&password="+password
+        http = urllib3.PoolManager()
+        response = http.request('GET', url).data
+        data = json.loads(response)
+
         if data["status"] == "success":
+            uuid = data["message"]
             db = getConnection()
             cur = db.cursor()
             
             if pstatus == True:
-                query = "SELECT * FROM jobqueue WHERE userid='%s' ORDER BY id ASC" % (uuid)
+                if prefix != True:
+                    query = "SELECT * FROM jobqueue WHERE userid=%s AND outname LIKE CONCAT(%s, '%%') ORDER BY id ASC"
+                    cur.execute(query, (uuid, prefix, ))
+                else:
+                    query = "SELECT * FROM jobqueue WHERE userid=%s ORDER BY id ASC"
+                    cur.execute(query, (uuid, ))
+            elif prefix != True:
+                query = "SELECT * FROM jobqueue WHERE userid=%s AND status=%s AND outname LIKE CONCAT(%s, '%%') ORDER BY id ASC"
+                cur.execute(query, (uuid, pstatus, prefix, ))
             else:
-                query = "SELECT * FROM jobqueue WHERE userid='%s' AND status='%s' ORDER BY id ASC" % (uuid, pstatus)
-            
-            cur.execute(query)
+                query = "SELECT * FROM jobqueue WHERE userid=%s AND status=%s ORDER BY id ASC"
+                cur.execute(query, (uuid, pstatus, ))
             
             jobs = {}
             for res in cur:
@@ -130,6 +184,8 @@ class AlignmentProgressHandler(tornado.web.RequestHandler):
                          'submissiondate': str(res[8]),
                          'finishdate': str(res[9])}
                 jobs[res[0]] = job
+            cur.close()
+            db.close()
             self.write(jobs)
         else:
             response = { 'action': 'list jobs',
@@ -149,73 +205,57 @@ class CreateJobHandler(tornado.web.RequestHandler):
         outname = self.get_argument('outname', True)
         
         url = charon_url+"/login?username="+username+"&password="+password
-        response = urllib.urlopen(url)
-        data = json.loads(response.read())
+        http = urllib3.PoolManager()
+        response = http.request('GET', url).data
+        data = json.loads(response)
         uuid = data["message"]
         
         if data["status"] == "success":
-            url = charon_url+"/files?username="+username+"&password="+password
-            response = urllib.urlopen(url)
-            data = json.loads(response.read())
             
-            files = data["filenames"]
             print(file1)
             print(file2)
             
             if file2 == True:
-                if (file1 in files):
-                    datalink = "https://s3.amazonaws.com/"+bucketname+"/"+uuid+"/"+file1
-                    
-                    h2 = hashlib.md5()
-                    h2.update((datalink).encode('utf-8'))
-                    uid = h2.hexdigest()
-                    
-                    db = getConnection()
-                    cur = db.cursor()
-                    query = "INSERT INTO jobqueue (uid, userid, datalink, outname, organism) VALUES ('%s', '%s', '%s', '%s', '%s')" % (uid, uuid, datalink, outname, organism)
-                    
-                    cur.execute(query)
-                    db.commit()
-                    cur.close()
-                    db.close()
-                    response = { 'action': 'create job',
-                         'task': username,
-                         'status': 'success',
-                         'message': uid}
-                    self.write(response)
-                else:
-                    response = { 'action': 'create job',
-                         'task': username,
-                         'status': 'error',
-                         'message': 'file not found'}
-                    self.write(response)
+                datalink = "https://s3.amazonaws.com/"+bucketname+"/"+uuid+"/"+file1
+                
+                h2 = hashlib.md5()
+                h2.update((outname+datalink).encode('utf-8'))
+                uid = h2.hexdigest()
+                
+                db = getConnection()
+                cur = db.cursor()
+                query = "INSERT INTO jobqueue (uid, userid, datalink, outname, organism) VALUES (%s, %s, %s, %s, %s)"
+                
+                cur.execute(query, (uid, uuid, datalink, outname, organism, ))
+                db.commit()
+                cur.close()
+                db.close()
+                response = { 'action': 'create job',
+                     'task': username,
+                     'status': 'success',
+                     'message': uid}
+                self.write(response)
             else:
-                if (file1 in files) & (file2 in files):
-                    datalink = "https://s3.amazonaws.com/"+bucketname+"/"+uuid+"/"+file1+";"+"https://s3.amazonaws.com/"+bucketname+"/"+uuid+"/"+file2
-                    
-                    h2 = hashlib.md5()
-                    h2.update((datalink).encode('utf-8'))
-                    uid = h2.hexdigest()
-                    
-                    db = getConnection()
-                    cur = db.cursor()
-                    query = "INSERT INTO jobqueue (uid, userid, datalink, outname, organism) VALUES ('%s', '%s', '%s', '%s', '%s')" % (uid, uuid, datalink, outname, organism)
-                    
-                    cur.execute(query)
-                    db.commit()
-                    cur.close()
-                    db.close()
-                    response = { 'action': 'create job',
-                         'task': username,
-                         'status': 'success',
-                         'message': uid}
-                    self.write(response)
-                else:
-                    response = { 'action': 'create job',
-                         'task': username,
-                         'status': 'error',
-                         'message': 'files not found'}
-                    self.write(response)
+                datalink = "https://s3.amazonaws.com/"+bucketname+"/"+uuid+"/"+file1+";"+"https://s3.amazonaws.com/"+bucketname+"/"+uuid+"/"+file2
+                
+                h2 = hashlib.md5()
+                h2.update((outname+datalink).encode('utf-8'))
+                uid = h2.hexdigest()
+                
+                db = getConnection()
+                cur = db.cursor()
+                query = "INSERT INTO jobqueue (uid, userid, datalink, outname, organism) VALUES (%s, %s, %s, %s, %s)"
+                
+                cur.execute(query, (uid, uuid, datalink, outname, organism, ))
+                db.commit()
+                cur.close()
+                db.close()
+                response = { 'action': 'create job',
+                     'task': username,
+                     'status': 'success',
+                     'message': uid}
+                self.write(response)
+
 
 class QueueViewHandler(tornado.web.RequestHandler):
     def get(self):
@@ -223,9 +263,10 @@ class QueueViewHandler(tornado.web.RequestHandler):
         username = self.get_argument('username', True)
         password = self.get_argument('password', True)
         
-        url = charon_url+"/login?username="+username+"&password="+password
-        response = urllib.urlopen(url)
-        data = json.loads(response.read())
+        url = charon_url+"/login?username="+str(username)+"&password="+str(password)
+        http = urllib3.PoolManager()
+        response = http.request('GET', url).data
+        data = json.loads(response)
         uuid = data["message"]
         
         if data["status"] == "success":
@@ -301,10 +342,57 @@ class GiveJobHandler(tornado.web.RequestHandler):
                 response["datalinks"] = res[3]
                 response["outname"] = res[4]
                 response["organism"] = res[5]
-                query = "UPDATE jobqueue SET status='submitted', submissiondate=now() WHERE id='%s'" % (res[0])
-                cur.execute(query)
+                query = "UPDATE jobqueue SET status='submitted', submissiondate=now() WHERE id=%s"
+                cur.execute(query, (res[0], ))
                 db.commit()
+            cur.close()
+            db.close()
+        self.write(response)
+
+class GiveJobHandlerArchs4Old(tornado.web.RequestHandler):
+    def get(self):
+        self.set_header("Access-Control-Allow-Origin", "*")
         
+        response = {}
+        response["id"] = "empty"
+        
+        db = getConnection()
+        cur = db.cursor()
+        query = "SELECT id, uid, resultbucket, datalinks, parameters FROM sequencing WHERE status='waiting' LIMIT 1"
+        cur.execute(query)
+        
+        for res in cur:
+            print("handing out job")
+            print(res)
+            response["id"] = res[0]
+            response["uid"] = res[1]
+            response["type"] = "sequencing"
+            response["resultbucket"] = res[2]
+            response["datalinks"] = res[3]
+            response["parameters"] = res[4]
+            query = "UPDATE sequencing SET status='submitted', datesubmitted=now() WHERE id=%s"
+            cur.execute(query, (res[0], ))
+            db.commit()
+        cur.close()
+        db.close()
+        self.write(response)
+
+class GiveJobHandlerArchs4(tornado.web.RequestHandler):
+    def get(self):
+        self.set_header("Access-Control-Allow-Origin", "*")
+        print("Queue Size: "+str(len(jobQueueARCHS4)))
+        if len(jobQueueARCHS4) < minQueueSize:
+            #lockUpdate = True
+            refillJobQueueARCHS4()
+            #lockUpdate = False
+        
+        response = {}
+        
+        if len(jobQueueARCHS4) == 0:
+            response["id"] = "empty"
+        else:
+            response = jobQueueARCHS4.pop(0)
+        print(response)
         self.write(response)
 
 class FinishJobHandler(tornado.web.RequestHandler):
@@ -317,22 +405,63 @@ class FinishJobHandler(tornado.web.RequestHandler):
         if jpass == jobpasswd:
             db = getConnection()
             cur = db.cursor()
-            query = "UPDATE jobqueue SET status='completed', finishdate=now() WHERE uid='%s'" % (uid)
-            cur.execute(query)
+            query = "UPDATE jobqueue SET status='completed', finishdate=now() WHERE uid=%s"
+            cur.execute(query, (uid,))
             db.commit()
-            
+            cur.close()
+            db.close()
             response["id"] = uid
             response["status"] = "completed"
         else:
             response["id"] = uid
             response["status"] = "failed"
+        self.write(response)
+
+class FinishJobHandlerArchs4(tornado.web.RequestHandler):
+    def post(self):
+        self.set_header("Access-Control-Allow-Origin", "*")
+        data = json.loads(self.request.body)
         
+        jpass = data["pass"]
+        uid = data["uid"]
+        listid = int(data["id"])
+        nreads = int(data["nreads"])
+        naligned = int(data["naligned"])
+        nlength = int(data["nlength"])
+        
+        print(data)
+        
+        response = {}
+        if jpass == jobpasswd:
+            print("get connection")
+            db = getConnection()
+            cur = db.cursor()
+            query = "UPDATE sequencing SET status='completed', datecompleted=now() WHERE uid=%s"
+            cur.execute(query, (uid,))
+            db.commit()
+            print("updated sequencing")
+            
+            query = "INSERT INTO runinfo (listid, nreads, naligned, nlength) VALUES (%s, %s, %s, %s)"
+            cur.execute(query, (listid, nreads, naligned, nlength,))
+            db.commit()
+            cur.close()
+            db.close()
+            
+            print("inserted runinfo")
+            
+            response["id"] = uid
+            response["status"] = "completed"
+        else:
+            response["id"] = uid
+            response["status"] = "credentials failed"
         self.write(response)
 
 application = tornado.web.Application([
     (r"/cloudalignment/version", VersionHandler),
     (r"/cloudalignment/givejob", GiveJobHandler),
+    (r"/cloudalignment/givejobarchs4", GiveJobHandlerArchs4),
     (r"/cloudalignment/finishjob", FinishJobHandler),
+    (r"/cloudalignment/finishjobarchs4", FinishJobHandlerArchs4),
     (r"/cloudalignment/createjob", CreateJobHandler),
     (r"/cloudalignment/progress", AlignmentProgressHandler),
     (r"/cloudalignment/queueview", QueueViewHandler),
@@ -345,8 +474,3 @@ ec2t.start()
 if __name__ == "__main__":
     application.listen(5000)
     tornado.ioloop.IOLoop.instance().start()
-
-
-
-
-

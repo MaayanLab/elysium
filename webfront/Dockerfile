@@ -1,23 +1,22 @@
-FROM ubuntu:16.04
+FROM ubuntu:18.04
 
 MAINTAINER Alexander Lachmann <alexander.lachmann@mssm.edu>
 
 # Python installs
 RUN apt-get update && apt-get install -y \
-    python \
-    python-dev \
-    python-pip \
-    python-setuptools \
-    libmysqlclient-dev
+    python3 \
+    python3-dev \
+    python3-pip \
+    python3-setuptools
 
 # pip installs
-RUN pip install --upgrade pip
-RUN pip install tornado
-RUN pip install MySQL-python
-RUN pip install requests
-RUN pip install boto
-RUN pip install python-dateutil --upgrade
-RUN pip install awscli --upgrade --user
+RUN pip3 install --upgrade pip
+RUN pip3 install tornado
+RUN pip3 install pymysql
+RUN pip3 install requests
+RUN pip3 install boto3
+RUN pip3 install python-dateutil --upgrade
+RUN pip3 install awscli --upgrade --user
 
 WORKDIR /usr/local/src
 
