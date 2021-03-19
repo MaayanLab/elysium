@@ -1,1 +1,1 @@
-python mainalign.py
+python3 mainalign.py
