@@ -76,6 +76,14 @@ def scaleGroup(size):
         DesiredCapacity=size
     )
 
+def setFailing():
+    db = getConnection()
+    cur = db.cursor()
+    query = "UPDATE jobqueue SET status='failed' WHERE status='submitted' AND TIMESTAMPDIFF(HOUR, submissiondate, NOW()) > 1"
+    cur.execute(query)
+    cur.close()
+    db.close()
+
 def refillJobQueueARCHS4():
     
     db = getConnection()
@@ -107,11 +115,11 @@ def refillJobQueueARCHS4():
 def ec2thread(mininstances, maxinstances, scalefactor):
     while True:
         try:
-            
-            time.sleep(300)
+            setFailing()
+
             db = getConnection()
             cur = db.cursor()
-            query = "SELECT id FROM jobqueue WHERE status='waiting' LIMIT 100"
+            query = "SELECT id FROM jobqueue WHERE status='waiting' OR status='submitted' LIMIT 10"
             cur.execute(query)
             cur.close()
             db.close()
@@ -125,10 +133,14 @@ def ec2thread(mininstances, maxinstances, scalefactor):
             if counter > 0 and current_instance_count == 0:
                 scaleGroup(maxinstances)
             elif counter == 0 and current_instance_count > 0:
-                time.sleep(600)
+                lockUpdate = True
                 scaleGroup(mininstances)
+               
         except:
             print("Loop had an issue")
+
+        time.sleep(60)
+        lockUpdate = False
 
 class AlignmentProgressHandler(tornado.web.RequestHandler):
     def get(self):
@@ -327,7 +339,7 @@ class GiveJobHandler(tornado.web.RequestHandler):
         response = {}
         response["id"] = "empty"
         
-        if jpass == jobpasswd:
+        if jpass == jobpasswd and not lockUpdate:
             db = getConnection()
             cur = db.cursor()
             query = "SELECT * FROM jobqueue WHERE status='waiting' LIMIT 1"
@@ -382,10 +394,8 @@ class GiveJobHandlerArchs4(tornado.web.RequestHandler):
         self.set_header("Access-Control-Allow-Origin", "*")
         print("Queue Size: "+str(len(jobQueueARCHS4)))
         if len(jobQueueARCHS4) < minQueueSize:
-            #lockUpdate = True
             refillJobQueueARCHS4()
-            #lockUpdate = False
-        
+            
         response = {}
         
         if len(jobQueueARCHS4) == 0:
