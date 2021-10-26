@@ -448,24 +448,29 @@ class FinishJobHandlerArchs4(tornado.web.RequestHandler):
         
         response = {}
         if jpass == jobpasswd:
-            print("get connection")
-            db = getConnection()
-            cur = db.cursor()
-            query = "UPDATE sequencing SET status='completed', datecompleted=now() WHERE uid=%s"
-            cur.execute(query, (uid,))
-            db.commit()
-            print("updated sequencing")
-            
-            query = "INSERT INTO runinfo (listid, nreads, naligned, nlength) VALUES (%s, %s, %s, %s)"
-            cur.execute(query, (listid, nreads, naligned, nlength,))
-            db.commit()
-            cur.close()
-            db.close()
-            
-            print("inserted runinfo")
-            
-            response["id"] = uid
-            response["status"] = "completed"
+            if nreads > 0:
+                db = getConnection()
+                cur = db.cursor()
+                query = "UPDATE sequencing SET status='completed', datecompleted=now() WHERE uid=%s"
+                cur.execute(query, (uid,))
+                db.commit()
+                
+                query = "INSERT INTO runinfo (listid, nreads, naligned, nlength) VALUES (%s, %s, %s, %s)"
+                cur.execute(query, (listid, nreads, naligned, nlength,))
+                db.commit()
+                cur.close()
+                db.close()
+                
+                response["id"] = uid
+                response["status"] = "completed"
+            else:
+                db = getConnection()
+                cur = db.cursor()
+                query = "UPDATE sequencing SET status='failed', datecompleted=now() WHERE uid=%s"
+                cur.execute(query, (uid,))
+                db.commit()
+                response["id"] = uid
+                response["status"] = "completed"
         else:
             response["id"] = uid
             response["status"] = "credentials failed"
