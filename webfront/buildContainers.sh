@@ -6,7 +6,7 @@ docker kill cloudalignment
 docker rm cloudalignment
 
 
-docker build -f Dockerfile -t maayanlab/cloudalignment .
+docker build -f Dockerfile -t maayanlab/cloudalignment:fb .
 
 
-docker push maayanlab/cloudalignment
+docker push maayanlab/cloudalignment:fb
